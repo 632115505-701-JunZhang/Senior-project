@@ -24,3 +24,13 @@
     </el-menu-item>
   </el-menu>
 </template>
+
+<style scoped></style>
+
+<script>
+export default {
+  data() {
+    return {};
+  },
+};
+</script>
