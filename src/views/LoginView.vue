@@ -57,17 +57,12 @@
 </style>
 
 <script>
-//import { login } from "../Services/LoginService";
-import Api from "../Services/AxiosClient.js";
+import Axios from "../Services/AxiosClient";
 
 export default {
   data() {
     return {
       form: {
-        email: "",
-        password: "",
-      },
-      user: {
         email: "",
         password: "",
       },
@@ -91,57 +86,31 @@ export default {
     };
   },
   methods: {
-    //登录
+    // 登录
     submitForm() {
-      //获取email 和password
-      // const email = this.form.email;
-      // const password = this.form.password;
-
-      // //确保非空
-      // const user = {
-      //   email: email,
-      //   password: password,
-      // };
-      // this.$refs.data.validate(async (valid) => {
-      //   if (valid) {
-      //     alert("Successful");
-      //   await login(data);
-      //     this.$router.push({ name: "login" });
-      //   } else {
-      //     console.log("error fail!");
-      //     return false;
-      //   }
+      Axios.post("http://18.141.213.44:8080/login", this.form).then((res) => {
+        //判断id是否为空 是否存在用户
+        //存在账户但是输错密码
+        console.log(res);
+        // if (res.id != null) {
+        //   console.log(this.$message.success(res.message));
+        //   if (
+        //     (this.form.email != res.email) |
+        //     (this.form.password != res.password)
+        //   ) {
+        //     alert("Email or password is not correct!");
+        //   } else {
+        //     this.$message.success(res.message);
+        //     this.$router.push("/home");
+        //   }
+        // } else {
+        //   this.$message.error(res.message);
+        // }
+      });
+      // .catch((error) => {
+      //   console.log(res.message);
+      //   console.log(res);
       // });
-      // console.log(email);
-      // console.log(password);
-
-      this.user.email = this.form.email;
-      this.user.password = this.form.password;
-
-      Api.post("/login", this.user)
-        .then((response) => {
-          // 处理登录成功的响应
-          console.log(response.data);
-          // 执行其他操作...
-        })
-        .catch((error) => {
-          // 处理登录失败的响应
-          console.error(error);
-          // 执行其他操作...
-        });
-
-      // Api.get("/users")
-
-      //   .then((response) => {
-      //     // 处理登录成功的响应
-      //     console.log(response.data);
-      //     // 执行其他操作...
-      //   })
-      //   .catch((error) => {
-      //     // 处理登录失败的响应
-      //     console.error(error);
-      //     // 执行其他操作...
-      //   });
     },
     register() {
       this.$router.push({ name: "Register" });

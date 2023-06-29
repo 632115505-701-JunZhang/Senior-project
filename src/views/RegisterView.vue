@@ -8,10 +8,10 @@
     <h3 class="Login_title">Register</h3>
 
     <!--用户名-->
-    <el-form-item label="Username" prop="text">
+    <el-form-item label="Username" prop="Username">
       <el-input
-        type="text"
-        v-model="form.text"
+        type="username"
+        v-model="form.username"
         placeholder="Input your Username"
       ></el-input>
     </el-form-item>
@@ -29,19 +29,19 @@
     <el-form-item label="Password" prop="password1">
       <el-input
         type="password"
-        v-model="form.password1"
+        v-model="form.password"
         placeholder="Input your Password"
       ></el-input>
     </el-form-item>
 
     <!--确认密码-->
-    <el-form-item label="Confirm" prop="password2">
+    <!-- <el-form-item label="Confirm" prop="password2">
       <el-input
         type="password"
-        v-model="form.password2"
+        v-model="form.password"
         placeholder="Input your Password"
       ></el-input>
-    </el-form-item>
+    </el-form-item> -->
 
     <!--登录按钮-->
     <el-form-item>
@@ -72,14 +72,15 @@
 </style>
 
 <script>
+import Axios from "../Services/AxiosClient";
 export default {
   data() {
     return {
       form: {
-        text: "",
+        username: "",
         email: "",
-        password1: "",
-        password2: "",
+        password: "",
+        // password2: "",
       },
       rules: {
         text: [
@@ -97,26 +98,45 @@ export default {
           },
         ],
 
-        password1: [
+        password: [
           {
             required: true,
             message: "Please input your password!",
             trigger: "blur",
           },
         ],
-        password2: [
-          {
-            required: true,
-            message: "Please input your password!",
-            trigger: "blur",
-          },
-        ],
+        // password2: [
+        //   {
+        //     required: true,
+        //     message: "Please input your password!",
+        //     trigger: "blur",
+        //   },
+        // ],
       },
     };
   },
   methods: {
     register() {
-      this.$router.push({ name: "Register" });
+      // if (this.form.password1 == this.form.password2) {
+      //   Axios.post("http://18.141.213.44:8080/register", this.form).then(
+      //     (res) => {
+      //       console.log(res);
+
+      //       this.$router.push({ name: "Register" });
+      //     }
+      //   );
+      // }
+
+      // // 当输入密码不相同时的弹窗
+      // else {
+      //   alert("");
+      // }
+
+      Axios.post("http://18.141.213.44:8080/register", this.form).then(
+        (res) => {
+          console.log(res);
+        }
+      );
     },
     cancel() {
       this.$router.push({ name: "Login" });

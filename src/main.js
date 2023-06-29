@@ -5,5 +5,10 @@ import store from "./store";
 //导入全局element
 import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
+//引入axios
+import Request from "./Services/AxiosClient.js";
 
-createApp(App).use(store).use(router).use(ElementPlus).mount("#app");
+const app = createApp(App).use(store).use(router).use(ElementPlus);
+
+app.config.globalProperties.$http = Request;
+app.mount("#app");
