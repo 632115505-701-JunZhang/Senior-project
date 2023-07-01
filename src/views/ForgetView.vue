@@ -1,11 +1,16 @@
 <template>
-  <el-form label-width="70px" class="Fpwd-container" :model="form">
+  <el-form
+    label-width="70px"
+    class="Fpwd-container"
+    :model="form3"
+    :rules="rules"
+  >
     <h3 class="Fpwd_title">HRM</h3>
     <!--输入确认邮箱-->
     <el-form-item label="Email" prop="email">
       <el-input
         type="email"
-        v-model="form.email"
+        v-model="form3.email"
         placeholder="Vertify your Email"
       ></el-input>
     </el-form-item>
@@ -44,27 +49,38 @@ import Axios from "../Services/AxiosClient";
 export default {
   data() {
     return {
-      form: {
+      form3: {
         email: "",
+      },
+
+      rules: {
+        email: [
+          {
+            required: true,
+            message: "Please input your email!",
+            trigger: "blur",
+          },
+        ],
       },
     };
   },
   method: {
     //确认邮箱功能
+
     confirm() {
-      Axios.post("http://13.214.205.122:8080/login", this.form).then((res) => {
-        console.log(res);
-        //判断条件是否存在接受回传
-        //假设200
-        if (code == 200) {
+      Axios.post("http://13.214.205.122:8080/existEmail", this.form3)
+
+        .then((res) => {
+          console.log(res);
           alert(res);
           this.$router.push({ name: "Resetpwd" });
-        } else {
-          alert(res.error);
-          this.$router.push({ name: "Register" });
-        }
-      });
+        })
+        .catch((error) => {
+          alert(error);
+        });
     },
+
+    //返回按钮
     back() {
       this.$router.push({ name: "Login" });
     },

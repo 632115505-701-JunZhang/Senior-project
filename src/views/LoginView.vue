@@ -2,16 +2,15 @@
   <el-form
     label-width="70px"
     class="Login-container"
-    :model="form"
+    :model="form1"
     :rules="rules"
-    ref="form"
   >
     <h3 class="Login_title">HRM</h3>
     <!--账号-->
     <el-form-item label="Email" prop="email">
       <el-input
         type="email"
-        v-model="form.email"
+        v-model="form1.email"
         placeholder="Input your Email"
       ></el-input>
     </el-form-item>
@@ -19,7 +18,7 @@
     <el-form-item label="Password" prop="password">
       <el-input
         type="password"
-        v-model="form.password"
+        v-model="form1.password"
         placeholder="Input your Password"
       ></el-input>
     </el-form-item>
@@ -63,7 +62,7 @@ import Axios from "../Services/AxiosClient";
 export default {
   data() {
     return {
-      form: {
+      form1: {
         email: "",
         password: "",
       },
@@ -89,33 +88,14 @@ export default {
   methods: {
     // 登录
     submitForm() {
-      Axios.post("http://13.214.205.122:8080/login", this.form).then((res) => {
-        //判断id是否为空 是否存在用户
-
-        console.log(res);
-        if (res.id !== null) {
-          alert(res);
-          // this.$message.success(res.message);
+      Axios.post("http://13.214.205.122:8080/login", this.form1)
+        .then((res) => {
+          this.$message.success(res.message);
           this.$router.push("/home");
-          // if (
-          //   (this.form.email != res.email) |
-          //   (this.form.password != res.password)
-          // )
-
-          // {
-          //  alert("Email or password is not correct!");
-          // } else {
-
-          // }
-        } else {
-          alert(this.$message.error(res.message));
-          this.$message.error(res.message);
-        }
-      });
-      // .catch((error) => {
-      //   console.log(res.message);
-      //   console.log(res);
-      // });
+        })
+        .catch((error) => {
+          alert(error);
+        });
     },
     register() {
       this.$router.push({ name: "Register" });

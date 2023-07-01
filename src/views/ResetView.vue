@@ -59,10 +59,13 @@ export default {
   method: {
     //确认邮箱功能
     confirm() {
-      Axios.put("http://13.214.205.122:8080/login", this.form).then((res) => {
-        console.log(res);
-        //判断条件是否存在接受回传
-      });
+      Axios.put("http://13.214.205.122:8080/resetPassword", this.form)
+        .then((res) => {
+          alert(res);
+        })
+        .catch((error) => {
+          alert(error);
+        });
     },
   },
 };

@@ -2,7 +2,7 @@
   <el-form
     label-width="70px"
     class="Register-container"
-    :model="form"
+    :model="form2"
     :rules="rules"
   >
     <h3 class="Register_title">Register</h3>
@@ -11,7 +11,7 @@
     <el-form-item label="Username" prop="Username">
       <el-input
         type="username"
-        v-model="form.username"
+        v-model="form2.username"
         placeholder="Input your Username"
       ></el-input>
     </el-form-item>
@@ -20,7 +20,7 @@
     <el-form-item label="Email" prop="email">
       <el-input
         type="email"
-        v-model="form.email"
+        v-model="form2.email"
         placeholder="Input your Email"
       ></el-input>
     </el-form-item>
@@ -29,7 +29,7 @@
     <el-form-item label="Password" prop="password1">
       <el-input
         type="password"
-        v-model="form.password"
+        v-model="form2.password"
         placeholder="Input your Password"
       ></el-input>
     </el-form-item>
@@ -76,7 +76,7 @@ import Axios from "../Services/AxiosClient";
 export default {
   data() {
     return {
-      form: {
+      form2: {
         username: "",
         email: "",
         password: "",
@@ -117,9 +117,9 @@ export default {
   },
   methods: {
     register() {
-      Axios.post("http://13.214.205.122:8080/register", this.form)
+      Axios.post("http://13.214.205.122:8080/register", this.form2)
         .then((res) => {
-          // if (code == 200) {}
+          console.log(res);
           alert(res);
           this.$router.push({ name: "Login" });
         })
