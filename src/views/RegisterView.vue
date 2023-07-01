@@ -5,7 +5,7 @@
     :model="form"
     :rules="rules"
   >
-    <h3 class="Login_title">Register</h3>
+    <h3 class="Register_title">Register</h3>
 
     <!--用户名-->
     <el-form-item label="Username" prop="Username">
@@ -117,26 +117,15 @@ export default {
   },
   methods: {
     register() {
-      // if (this.form.password1 == this.form.password2) {
-      //   Axios.post("http://18.141.213.44:8080/register", this.form).then(
-      //     (res) => {
-      //       console.log(res);
-
-      //       this.$router.push({ name: "Register" });
-      //     }
-      //   );
-      // }
-
-      // // 当输入密码不相同时的弹窗
-      // else {
-      //   alert("");
-      // }
-
-      Axios.post("http://18.141.213.44:8080/register", this.form).then(
-        (res) => {
-          console.log(res);
-        }
-      );
+      Axios.post("http://13.214.205.122:8080/register", this.form)
+        .then((res) => {
+          // if (code == 200) {}
+          alert(res);
+          this.$router.push({ name: "Login" });
+        })
+        .catch((error) => {
+          alert(error);
+        });
     },
     cancel() {
       this.$router.push({ name: "Login" });

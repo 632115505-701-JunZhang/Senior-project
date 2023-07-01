@@ -1,0 +1,73 @@
+<template>
+  <el-form label-width="70px" class="Fpwd-container" :model="form">
+    <h3 class="Fpwd_title">HRM</h3>
+    <!--输入确认邮箱-->
+    <el-form-item label="Email" prop="email">
+      <el-input
+        type="email"
+        v-model="form.email"
+        placeholder="Vertify your Email"
+      ></el-input>
+    </el-form-item>
+
+    <!--确认按钮-->
+    <el-form-item>
+      <el-row class="Button">
+        <el-button type="primary" @click="confirm">Confirm</el-button>
+        &ensp; &ensp; &ensp; &ensp;&ensp; &ensp;&ensp; &ensp;
+
+        <!--取消按钮-->
+        <el-button type="primary" @click="back">Cancel</el-button>
+      </el-row>
+    </el-form-item>
+  </el-form>
+</template>
+
+<style>
+.Fpwd-container {
+  width: 350px;
+  border: 1px solid #eaeaea;
+  margin: 180px auto;
+  padding: 35px 35px 15px 35px;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 0 25px #cac6c6;
+}
+.el-input {
+  width: 198px;
+}
+</style>
+
+<script>
+import Axios from "../Services/AxiosClient";
+
+export default {
+  data() {
+    return {
+      form: {
+        email: "",
+      },
+    };
+  },
+  method: {
+    //确认邮箱功能
+    confirm() {
+      Axios.post("http://13.214.205.122:8080/login", this.form).then((res) => {
+        console.log(res);
+        //判断条件是否存在接受回传
+        //假设200
+        if (code == 200) {
+          alert(res);
+          this.$router.push({ name: "Resetpwd" });
+        } else {
+          alert(res.error);
+          this.$router.push({ name: "Register" });
+        }
+      });
+    },
+    back() {
+      this.$router.push({ name: "Login" });
+    },
+  },
+};
+</script>

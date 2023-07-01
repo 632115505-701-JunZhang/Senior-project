@@ -25,15 +25,16 @@
     </el-form-item>
     <!--忘记密码-->
     <el-form-item>
-      <el-link :underline="false">Forget Password?</el-link>
+      <el-link :underline="false" @click="fpwd">Forget Password?</el-link>
     </el-form-item>
 
     <!--登录按钮-->
     <el-form-item>
       <el-row class="Button">
-        <el-button type="primary" @click="submitForm('form')">Login</el-button>
+        <el-button type="primary" @click="submitForm">Login</el-button>
         &ensp; &ensp; &ensp; &ensp;&ensp; &ensp;&ensp; &ensp;
-        <!--注册按钮-->
+
+        <!--注册按钮   ('form')-->
 
         <el-button type="primary" @click="register">Register</el-button>
       </el-row>
@@ -88,24 +89,28 @@ export default {
   methods: {
     // 登录
     submitForm() {
-      Axios.post("http://18.141.213.44:8080/login", this.form).then((res) => {
+      Axios.post("http://13.214.205.122:8080/login", this.form).then((res) => {
         //判断id是否为空 是否存在用户
-        //存在账户但是输错密码
+
         console.log(res);
-        // if (res.id != null) {
-        //   console.log(this.$message.success(res.message));
-        //   if (
-        //     (this.form.email != res.email) |
-        //     (this.form.password != res.password)
-        //   ) {
-        //     alert("Email or password is not correct!");
-        //   } else {
-        //     this.$message.success(res.message);
-        //     this.$router.push("/home");
-        //   }
-        // } else {
-        //   this.$message.error(res.message);
-        // }
+        if (res.id !== null) {
+          alert(res);
+          // this.$message.success(res.message);
+          this.$router.push("/home");
+          // if (
+          //   (this.form.email != res.email) |
+          //   (this.form.password != res.password)
+          // )
+
+          // {
+          //  alert("Email or password is not correct!");
+          // } else {
+
+          // }
+        } else {
+          alert(this.$message.error(res.message));
+          this.$message.error(res.message);
+        }
       });
       // .catch((error) => {
       //   console.log(res.message);
@@ -114,6 +119,10 @@ export default {
     },
     register() {
       this.$router.push({ name: "Register" });
+    },
+
+    fpwd() {
+      this.$router.push({ name: "Fpwd" });
     },
   },
 };

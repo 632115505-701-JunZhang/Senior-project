@@ -16,7 +16,8 @@ request.interceptors.request.use(
     return config;
   },
   (error) => {
-    return Promise.reject(error);
+    console.log(error);
+    // return Promise.reject(error);
   }
 );
 
@@ -25,19 +26,24 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   (response) => {
     let res = response.data;
+    let code = response.status;
+
+    console.log("code=" + code);
     // 如果是返回的文件
     if (response.config.responseType === "blob") {
       return res;
     }
     // 兼容服务端返回的字符串数据
-    if (typeof res === "string") {
-      res = res ? JSON.parse(res) : res;
-    }
+    // if (typeof res === "string") {
+    //   res = res ? JSON.parse(res) : res;
+    // }
     return res;
   },
+
   (error) => {
-    console.log("err" + error); // for debug
-    return Promise.reject(error);
+    return Promise.reject(error.res);
+    //   console.log("err" + error); // for debug
+    //   alert(Promise.reject(error));
   }
 );
 
