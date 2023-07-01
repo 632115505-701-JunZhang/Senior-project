@@ -64,16 +64,19 @@ export default {
       },
     };
   },
-  method: {
+  methods: {
     //确认邮箱功能
 
     confirm() {
-      Axios.post("http://13.214.205.122:8080/existEmail", this.form3)
-
+      Axios.get(
+        "http://13.214.205.122:8080/existEmail?email=" + this.form3.email
+      )
         .then((res) => {
-          console.log(res);
           alert(res);
-          this.$router.push({ name: "Resetpwd" });
+          this.$router.push({
+            name: "Resetpwd",
+            params: { email: this.form3.email },
+          });
         })
         .catch((error) => {
           alert(error);

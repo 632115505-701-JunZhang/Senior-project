@@ -85,12 +85,25 @@ export default {
       },
     };
   },
+
+  created() {
+    console.log(localStorage.getItem("token"));
+  },
   methods: {
     // 登录
     submitForm() {
       Axios.post("http://13.214.205.122:8080/login", this.form1)
         .then((res) => {
+          //转换字符串
+          let rowval = {
+            id: res.id,
+            email: res.email,
+            landlordid: res.landlord.id,
+            tenantid: res.tenant.id,
+          };
           this.$message.success(res.message);
+          //设置taken
+          localStorage.setItem("token", JSON.stringify(rowval));
           this.$router.push("/home");
         })
         .catch((error) => {

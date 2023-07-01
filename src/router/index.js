@@ -28,7 +28,11 @@ const routes = [
     name: "Fpwd",
     component: ForgetView,
   },
-  { path: "/resetpwd", name: "Restpwd", component: ResetView },
+  {
+    path: "/resetpwd/:email",
+    name: "Resetpwd",
+    component: ResetView,
+  },
 ];
 
 const router = createRouter({

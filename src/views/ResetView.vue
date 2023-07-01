@@ -8,6 +8,7 @@
         type="email"
         v-model="form.email"
         placeholder="Vertify your Email"
+        readonly
       ></el-input>
     </el-form-item>
     <!--输入确认密码-->
@@ -23,7 +24,7 @@
     <el-form-item>
       <el-row class="Button">
         &ensp;&ensp; &ensp;&ensp; &ensp; &ensp;&ensp;&ensp;
-        <el-button type="primary" @click="confirm">Confirm</el-button>
+        <el-button type="primary" @click="submit">Submit</el-button>
       </el-row>
     </el-form-item>
   </el-form>
@@ -56,12 +57,22 @@ export default {
       },
     };
   },
-  method: {
+  created() {
+    this.form.email = this.$route.params.email;
+  },
+  methods: {
     //确认邮箱功能
-    confirm() {
-      Axios.put("http://13.214.205.122:8080/resetPassword", this.form)
+    submit() {
+      Axios.post(
+        "http://13.214.205.122:8080/resetPassword?email=" +
+          this.form.email +
+          "&password=" +
+          this.form.password
+      )
         .then((res) => {
+          console.log(res);
           alert(res);
+          this.$router.push({ name: "Login" });
         })
         .catch((error) => {
           alert(error);
