@@ -1,67 +1,64 @@
 <template>
-  <div class="common-layout">
+  <el-container>
+    <el-aside width="200px">
+      <AsideCom />
+      <router-view> </router-view>
+    </el-aside>
     <el-container>
-      <el-aside width="200px">
-        <AsideCom />
-        <router-view> </router-view>
-      </el-aside>
-      <el-container>
-        <!-- Header 标头-->
-        <el-header>
-          <el-form :model="form" label-high="10px" class="conditon">
-            <el-row class="condition-set">
-              &ensp; &ensp; &ensp;&ensp; &ensp; &ensp;&ensp;
-              <!--城市选择-->
-              <el-select v-model="form.city" placeholder="City">
-                <el-option label="Chiang Mai" :value="form.chiangmai" />
-                <el-option label="Bangkok" :value="form.bangkok" />
-              </el-select>
-              &ensp; &ensp; &ensp;
-              <!--学校选择-->
-              <el-select v-model="form.university" placeholder="University">
-                <el-option label="CMU" :value="form.cmu" />
-                <el-option label="CHULA" :value="form.chula" />
-              </el-select>
-              &ensp; &ensp; &ensp;
-              <!--房型选择-->
-              <el-select v-model="form.roomtype" placeholder="Room type">
-                <el-option label="Single room" :value="form.type1" />
-                <el-option label="Whole set" :value="form.type2" />
-                <el-option label="Huouse" :value="form.type3" />
-              </el-select>
-              &ensp; &ensp; &ensp;
-              <!--价格选择-->
-              <el-select v-model="form.price" placeholder="Price">
-                <el-option label="Below 5000" :value="form.below" />
-                <el-option label="5000-10000" :value="form.period" />
-                <el-option label="Over 10000" :value="form.over" />
-              </el-select>
-              &ensp; &ensp; &ensp; &ensp; &ensp;
-              <!--添加Search 按钮搜索-->
-              <el-button type="primary" @click="search">Search</el-button>
-            </el-row>
-          </el-form>
-        </el-header>
-        <!-- Main 主体区域-->
-        <el-main>
-          <el-card :data="card" class="Rentcard" >
-            <div class="card-header">
-              <el-avatar :size="50" :src="card.avatar"> user </el-avatar>
-              <div>{{ card.username }}</div>
-              <div>{{ card.address }}</div>
-            </div>
-            <div>
-              <el-table :data="tableData" stripe style="width: 100%">
-                <el-table-column prop="rentdate" label="Rentdate" width="180" />
-                <el-table-column prop="room" label="Room" width="180" />
-                <el-table-column prop="price" label="Rrice" width="180" />
-                <el-table-column prop="shared" label="Shared accomdation" />
-              </el-table>
-            </div>
-            <el-button type="primary" @click="contact">Contact him</el-button>
-          </el-card>
+      <!-- Header 标头-->
+      <el-header>
+        <el-form :model="form" label-high="10px" class="conditon">
+          <el-row class="condition-set">
+            &ensp; &ensp; &ensp;&ensp; &ensp; &ensp;&ensp;
+            <!--城市选择-->
+            <el-select v-model="form.city" placeholder="City">
+              <el-option label="Chiang Mai" :value="form.chiangmai" />
+              <el-option label="Bangkok" :value="form.bangkok" />
+            </el-select>
+            &ensp; &ensp; &ensp;
+            <!--学校选择-->
+            <el-select v-model="form.university" placeholder="University">
+              <el-option label="CMU" :value="form.cmu" />
+              <el-option label="CHULA" :value="form.chula" />
+            </el-select>
+            &ensp; &ensp; &ensp;
+            <!--房型选择-->
+            <el-select v-model="form.roomtype" placeholder="Room type">
+              <el-option label="Single room" :value="form.type1" />
+              <el-option label="Whole set" :value="form.type2" />
+              <el-option label="Huouse" :value="form.type3" />
+            </el-select>
+            &ensp; &ensp; &ensp;
+            <!--价格选择-->
+            <el-select v-model="form.price" placeholder="Price">
+              <el-option label="Below 5000" :value="form.below" />
+              <el-option label="5000-10000" :value="form.period" />
+              <el-option label="Over 10000" :value="form.over" />
+            </el-select>
+            &ensp; &ensp; &ensp; &ensp; &ensp;
+            <!--添加Search 按钮搜索-->
+            <el-button type="primary" @click="search">Search</el-button>
+          </el-row>
+        </el-form>
+      </el-header>
+      <!-- Main 主体区域-->
+      <el-main>
+        <el-card :data="card" class="Rentcard">
+          <el-avatar :size="50" :src="card.avatar"> user </el-avatar>
+          <div>{{ card.username }}</div>
+          <div>{{ card.address }}</div>
 
-          <!-- <el-card class="Rentcard2">
+          <el-table :data="tableData" stripe style="width: 100%">
+            <el-table-column prop="rentdate" label="Rentdate" width="180" />
+            <el-table-column prop="room" label="Room" width="180" />
+            <el-table-column prop="price" label="Rrice" width="180" />
+            <el-table-column prop="shared" label="Shared accomdation" />
+          </el-table>
+
+          <el-button type="primary" @click="contact">Contact him</el-button>
+        </el-card>
+
+        <!-- <el-card class="Rentcard2">
             <div class="card-header">
               <span>avatar</span>
               <h1>Username</h1>
@@ -76,11 +73,10 @@
               </el-table>
             </div>
           </el-card> -->
-        </el-main>
-        <router-view></router-view>
-      </el-container>
+      </el-main>
+      <!-- <router-view></router-view> -->
     </el-container>
-  </div>
+  </el-container>
 </template>
 
 <style>
