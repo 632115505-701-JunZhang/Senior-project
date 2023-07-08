@@ -22,6 +22,9 @@
       <el-icon><setting /></el-icon>
       <template #title>Chat</template>
     </el-menu-item>
+    <el-meanu-item>
+      <el-button @click="logout"> Logout </el-button>
+    </el-meanu-item>
   </el-menu>
 </template>
 
@@ -31,6 +34,13 @@
 export default {
   data() {
     return {};
+  },
+
+  methods: {
+    logout() {
+      localStorage.clear;
+      this.$router.push({ name: "Login" });
+    },
   },
 };
 </script>
