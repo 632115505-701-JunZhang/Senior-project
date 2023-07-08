@@ -48,11 +48,15 @@
           <div>{{ card.username }}</div>
           <div>{{ card.address }}</div>
 
-          <el-table :data="tableData" stripe style="width: 100%">
+          <el-table class="tabledata" :data="tableData" stripe>
             <el-table-column prop="rentdate" label="Rentdate" width="180" />
             <el-table-column prop="room" label="Room" width="180" />
             <el-table-column prop="price" label="Rrice" width="180" />
-            <el-table-column prop="shared" label="Shared accomdation" />
+            <el-table-column
+              prop="shared"
+              label="Shared accomdation"
+              width="180"
+            />
           </el-table>
 
           <el-button type="primary" @click="contact">Contact him</el-button>
@@ -88,6 +92,9 @@
 .condition-set {
   margin: 25px auto;
 }
+.tabledata {
+  width: 180%;
+}
 </style>
 
 <script>
@@ -115,14 +122,14 @@ export default {
         address: "XJSIOKAJHNNDOIDOIAH",
       },
 
-      // tableData: [
-      //   {
-      //     rentdate: "7month",
-      //     room: "single",
-      //     price: "5000",
-      //     shared: "no",
-      //   },
-      // ],
+      tableData: [
+        {
+          rentdate: "7month",
+          room: "single",
+          price: "5000",
+          shared: "no",
+        },
+      ],
     };
   },
 
