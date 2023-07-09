@@ -10,12 +10,6 @@
         <el-form :model="form" label-high="10px" class="conditon">
           <el-row class="condition-set">
             &ensp; &ensp; &ensp;&ensp; &ensp; &ensp;&ensp;
-            <!--城市选择-->
-            <el-select v-model="form.city" placeholder="City">
-              <el-option label="Chiang Mai" :value="form.chiangmai" />
-              <el-option label="Bangkok" :value="form.bangkok" />
-            </el-select>
-            &ensp; &ensp; &ensp;
             <!--学校选择-->
             <el-select v-model="form.university" placeholder="University">
               <el-option label="CMU" :value="form.cmu" />
@@ -35,6 +29,12 @@
               <el-option label="5000-10000" :value="form.period" />
               <el-option label="Over 10000" :value="form.over" />
             </el-select>
+            &ensp; &ensp; &ensp;
+            <!--价格选择-->
+            <el-select v-model="form.acc" placeholder="Shared acconmdation">
+              <el-option label="Yes" :value="form.yes" />
+              <el-option label="No" :value="form.no" />
+            </el-select>
             &ensp; &ensp; &ensp; &ensp; &ensp;
             <!--添加Search 按钮搜索-->
             <el-button type="primary" @click="search">Search</el-button>
@@ -43,40 +43,30 @@
       </el-header>
       <!-- Main 主体区域-->
       <el-main>
-        <el-card :data="card" class="Rentcard">
-          <el-avatar :size="50" :src="card.avatar"> user </el-avatar>
-          <div>{{ card.username }}</div>
+        <el-card v-for="card in cards" class="Rentcard" :key="card.id">
+          <!-- <el-avatar :size="50" :src="card.avatar"> user </el-avatar> -->
+          <div>{{ console.log(card) }}</div>
+          <div>{{ card.tenant_name }}</div>
           <div>{{ card.address }}</div>
 
-          <el-table class="tabledata" :data="tableData" stripe>
-            <el-table-column prop="rentdate" label="Rentdate" width="180" />
-            <el-table-column prop="room" label="Room" width="180" />
-            <el-table-column prop="price" label="Rrice" width="180" />
+          <el-table
+            class="tabledata"
+            :data="[card]"
+            stripe
+            style="width: 100%"
+            :row-key="card.id"
+          >
+            <el-table-column prop="expect_date" label="Rentdate" width="180" />
+            <el-table-column prop="room_type" label="Room" width="180" />
+            <el-table-column prop="price" label="Price" width="180" />
             <el-table-column
-              prop="shared"
-              label="Shared accomdation"
-              width="180"
+              prop="share_accommodation"
+              label="Shared accommodation"
             />
           </el-table>
 
-          <el-button type="primary" @click="contact">Contact him</el-button>
+          <!-- <el-button type="primary" @click="contact">Contact him</el-button> -->
         </el-card>
-
-        <!-- <el-card class="Rentcard2">
-            <div class="card-header">
-              <span>avatar</span>
-              <h1>Username</h1>
-              <span>adress</span>
-            </div>
-            <div>
-              <el-table :data="tableData" stripe style="width: 100%">
-                <el-table-column prop="rentdate" label="Rentdate" width="180" />
-                <el-table-column prop="room" label="Room" width="180" />
-                <el-table-column prop="price" label="Price" width="180" />
-                <el-table-column prop="shared" label="Shared accomdation" />
-              </el-table>
-            </div>
-          </el-card> -->
       </el-main>
       <!-- <router-view></router-view> -->
     </el-container>
@@ -105,8 +95,6 @@ export default {
   data() {
     return {
       form: {
-        chiangmai: "Chiang-Mai",
-        bangkok: "Bangkok",
         cmu: "CMU",
         chula: "CHULA",
         type1: "Single Room",
@@ -115,21 +103,15 @@ export default {
         below: "5000",
         period: "5000-10000",
         over: "Over-10000",
+        yes: "Yes",
+        no: "No",
       },
       card: {
         avatar: "",
         username: "JACKSON",
         address: "XJSIOKAJHNNDOIDOIAH",
       },
-
-      tableData: [
-        {
-          rentdate: "7month",
-          room: "single",
-          price: "5000",
-          shared: "no",
-        },
-      ],
+      cards: [],
     };
   },
 
@@ -154,6 +136,17 @@ export default {
 
   created() {
     console.log(localStorage.getItem("token"));
+    //获取数据
+    Axios.get("http://13.214.205.122:8080/getCards")
+      .then((res) => {
+        console.log(res);
+        var cardsString = JSON.stringify(res);
+        this.cards = JSON.parse(cardsString);
+        console.log(this.cards);
+      })
+      .catch((error) => {
+        alert(error);
+      });
   },
 
   components: {

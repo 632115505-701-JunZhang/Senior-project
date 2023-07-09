@@ -23,7 +23,7 @@ const routes = [
     path: "/home",
     name: "Home",
     component: HomeView,
-    children: [{ path: "rent", component: RentView }],
+    children: [],
   },
   {
     path: "/fpwd",
@@ -35,6 +35,7 @@ const routes = [
     name: "Resetpwd",
     component: ResetView,
   },
+  { path: "/rent", name: "Rent", component: RentView },
 ];
 
 const router = createRouter({
