@@ -15,13 +15,13 @@
           <template #header>
             <div class="card-header">
               <el-row>
-                <el-select v-model="card.city" placeholder="City">
+                <el-select v-model="house.city" placeholder="City">
                   <el-option label="Chiang Mai" :value="card.chiangmai" />
-                  <el-option label="Bangkok" :value="card.bangkok" />
+                  <!-- <el-option label="Bangkok" :value="card.bangkok" /> -->
                 </el-select>
                 &ensp; &ensp; &ensp;
                 <!--学校选择-->
-                <el-select v-model="card.university" placeholder="University">
+                <el-select v-model="house.address" placeholder="University">
                   <el-option label="CMU" :value="card.cmu" />
                   <el-option label="CMRU" :value="card.cmru" />
                 </el-select>
@@ -38,7 +38,7 @@
                   <div class="block">
                     <span class="demonstration">Start date</span>
                     <el-date-picker
-                      v-model="card.value1"
+                      v-model="house.start_time"
                       type="date"
                       placeholder="Pick a day"
                       :size="size"
@@ -50,7 +50,7 @@
                   <div class="block">
                     <span class="demonstration">End date</span>
                     <el-date-picker
-                      v-model="card.value2"
+                      v-model="house.end_time"
                       type="date"
                       placeholder="Pick a day"
                       :size="size"
@@ -61,16 +61,16 @@
             </el-form-item>
             <!--房型选择-->
             <el-form-item label="Expect room type">
-              <el-select v-model="card.roomtype" placeholder="Room type">
-                <el-option label="Single room" :value="card.type1" />
-                <el-option label="Whole set" :value="card.type2" />
-                <el-option label="Huouse" :value="card.type3" />
+              <el-select v-model="house.room_type" placeholder="Room type">
+                <el-option label="Single room" :value="card.room_type_single" />
+                <el-option label="Whole set" :value="card.room_type_wholeSet" />
+                <el-option label="House" :value="card.room_type_house" />
               </el-select>
             </el-form-item>
             <!--价格选择-->
             <el-form-item label="Expect rent price">
               <el-input
-                v-model="card.price"
+                v-model="house.price"
                 placeholder="Please input"
                 clearable
               />
@@ -127,7 +127,7 @@ el-container {
 
 <script>
 import AsideCom from "../components/AsideCom.vue";
-
+import Axios from "../Services/AxiosClient";
 export default {
   data() {
     return {
@@ -138,11 +138,20 @@ export default {
         cmru: "CMRU",
         date: "",
         price: "",
-        type1: "Single Room",
-        type2: "Whole Set",
-        type3: "House",
-        value1: "",
-        value2: "",
+        room_type: "",
+        room_type_single: "Single Room",
+        room_type_wholeSet: "Whole Set",
+        room_type_house: "House",
+        start_time: "",
+        end_time: "",
+      },
+      house: {
+        city: "",
+        address: "",
+        start_time: "",
+        end_time: "",
+        room_type: "",
+        price: "",
       },
     };
   },
@@ -152,8 +161,67 @@ export default {
   },
 
   methods: {
+    checkValues() {
+      if (!this.house.city) {
+        alert("Please select city");
+        return false;
+      }
+      if (!this.house.address) {
+        alert("Please select university");
+        return false;
+      }
+      if (!this.house.start_time) {
+        alert("Please select start_time");
+        return false;
+      }
+      if (!this.house.end_time) {
+        alert("Please select end_time");
+        return false;
+      }
+      if (this.house.end_time < this.house.start_time) {
+        alert("End time is earlier than start time");
+        return false;
+      }
+      if (!this.house.room_type) {
+        alert("Please select room type");
+        return false;
+      }
+      if (!this.house.price) {
+        alert("Please select rent price");
+        return false;
+      }
+      return true;
+    },
     search() {
-      console.log(this.card.value1);
+      if (!this.checkValues()) {
+        return;
+      }
+      this.house.start_time = this.formatDate(this.house.start_time);
+      this.house.end_time = this.formatDate(this.house.end_time);
+      Axios.post("http://13.214.205.122:8080/houseSearch", this.house)
+        .then((res) => {
+          console.log(res);
+          var housesString = JSON.stringify(res);
+          this.houses = JSON.parse(housesString);
+          this.$router.push({
+            name: "Find",
+            params: { houses: JSON.stringify(this.houses) },
+          });
+        })
+        .catch((error) => {
+          alert(error);
+        });
+      console.log(this.house);
+    },
+    formatDate(date) {
+      if (date) {
+        const dateObj = new Date(date);
+        const year = dateObj.getFullYear();
+        const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+        const day = String(dateObj.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+      }
+      return "";
     },
   },
 };

@@ -6,6 +6,7 @@ import ForgetView from "../views/ForgetView.vue";
 import ResetView from "../views/ResetView.vue";
 import RentView from "../views/RentView.vue";
 import Rentfound from "../views/RentfoundView.vue";
+import DetailView from "../views/DetailView.vue";
 
 const routes = [
   {
@@ -40,13 +41,21 @@ const routes = [
     path: "/rent",
     name: "Rent",
     component: RentView,
-    children: [
-      {
-        path: "find",
-        name: "Find",
-        component: Rentfound,
-      },
-    ],
+    children: [],
+  },
+  {
+    path: "/find/:house",
+    name: "Find",
+    component: Rentfound,
+    // meta: {
+    //   showFather: false,
+    // },
+  },
+  {
+    path: "/detail",
+    name: "Detail",
+    component: DetailView,
+    children: [],
   },
 ];
 
