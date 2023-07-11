@@ -10,7 +10,7 @@
           <h3 class="House_detial_title">House Details</h3>
         </el-header>
         <el-main>
-          <el-card class="House_Detail">
+          <el-card class="House_Detail"  >
             <template #header>
               <div class="card-header">
                 <span>
@@ -27,7 +27,7 @@
                 </span>
               </div>
             </template>
-            <el-descriptions title="Username">
+            <el-descriptions title="Username" :data="houseinformation">
               <el-descriptions-item label="University">{{
                 university
               }}</el-descriptions-item>
@@ -42,27 +42,27 @@
               }}</el-descriptions-item>
 
               <el-descriptions-item label="Area">
-                <el-tag size="small">96</el-tag>
+                <el-tag size="small">{{ area }}</el-tag>
               </el-descriptions-item>
 
               <el-descriptions-item label="Floor">
-                <el-tag size="small">96</el-tag>
+                <el-tag size="small">{{ floor }}</el-tag>
               </el-descriptions-item>
 
               <el-descriptions-item label="Room Type">
-                <el-tag size="small">Single room</el-tag>
+                <el-tag size="small">{{ roomtype }}</el-tag>
               </el-descriptions-item>
 
               <el-descriptions-item label="Price">
-                <el-tag size="small">8000</el-tag>
+                <el-tag size="small">{{ price }}</el-tag>
               </el-descriptions-item>
 
               <el-descriptions-item label="Aviliable Timme">
-                <el-tag size="small">9.10-20.20</el-tag>
+                <el-tag size="small">{{ availabletime }}</el-tag>
               </el-descriptions-item>
 
               <el-descriptions-item label="Remarks">
-                <el-tag size="small">School</el-tag>
+                <el-tag size="small">{{ marks }}</el-tag>
               </el-descriptions-item>
             </el-descriptions>
             <el-button type="primary" @click="contact">Contact him</el-button>
@@ -95,6 +95,7 @@
 
 <script>
 import AsideCom from "../components/AsideCom.vue";
+import Axios from "../Services/AxiosClient";
 export default {
   data() {
     return {};
@@ -108,5 +109,9 @@ export default {
   //       "C:\Users\Jackson\Desktop\毕业设计\Senior-project\src\assets\kunming.jpg",
   //     ];
   //   },
+
+
+
+
 };
 </script>
