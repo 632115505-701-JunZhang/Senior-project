@@ -5,6 +5,7 @@ import RegisterView from "../views/RegisterView.vue";
 import ForgetView from "../views/ForgetView.vue";
 import ResetView from "../views/ResetView.vue";
 import RentView from "../views/RentView.vue";
+import Rentfound from "../views/RentfoundView.vue";
 
 const routes = [
   {
@@ -35,7 +36,18 @@ const routes = [
     name: "Resetpwd",
     component: ResetView,
   },
-  { path: "/rent", name: "Rent", component: RentView },
+  {
+    path: "/rent",
+    name: "Rent",
+    component: RentView,
+    children: [
+      {
+        path: "find",
+        name: "Find",
+        component: Rentfound,
+      },
+    ],
+  },
 ];
 
 const router = createRouter({

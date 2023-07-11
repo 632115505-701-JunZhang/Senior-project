@@ -143,7 +143,7 @@ export default {
       return true;
     },
     reset() {
-      Axios.get("http://localhost:8081/getCards")
+      Axios.get("http://13.214.205.122:8080/getCards")
         .then((res) => {
           // console.log(res);
           var cardsString = JSON.stringify(res);
@@ -163,7 +163,7 @@ export default {
       console.log("price=" + this.form.price);
       console.log("acc=" + this.form.acc);
       Axios.get(
-        "http://localhost:8081/cardSearch?" +
+        "http://13.214.205.122:8080/cardSearch?" +
           "address=" +
           this.form.university +
           "&room_type=" +
@@ -187,7 +187,7 @@ export default {
   created() {
     console.log(localStorage.getItem("token"));
     //获取数据
-    Axios.get("http://localhost:8081/getCards")
+    Axios.get("http://13.214.205.122:8080/getCards")
       .then((res) => {
         // console.log(res);
         var cardsString = JSON.stringify(res);
