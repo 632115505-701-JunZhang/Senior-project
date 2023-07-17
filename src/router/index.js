@@ -9,6 +9,7 @@ import Rentfound from "../views/RentfoundView.vue";
 import DetailView from "../views/DetailView.vue";
 import ManageView from "../views/ManageView.vue";
 import AddcardView from "../views/AddcardView.vue";
+import MycardView from "../views/MycardView.vue";
 
 const routes = [
   {
@@ -71,6 +72,12 @@ const routes = [
     path: "/addcard",
     name: "Addcard",
     component: AddcardView,
+    children: [],
+  },
+  {
+    path: "/mycard",
+    name: "Mycard",
+    component: MycardView,
     children: [],
   },
 ];

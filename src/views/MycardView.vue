@@ -5,60 +5,10 @@
       <router-view> </router-view>
     </el-aside>
     <el-container class="card-container">
-      <!-- Header 标头-->
       <el-header>
-        <el-form :model="form" label-high="10px" class="conditon">
-          <el-row class="condition-set">
-            &ensp; &ensp; &ensp;&ensp; &ensp; &ensp;&ensp;
-            <!--添加Reset 按钮搜索-->
-            <el-button type="primary" @click="reset">Reset</el-button>
-            &ensp; &ensp; &ensp;
-            <!--学校选择-->
-            <el-select
-              v-model="form.university"
-              placeholder="University"
-              style="width: 120px"
-            >
-              <el-option label="CMU" :value="form.cmu" />
-              <el-option label="CMRU" :value="form.cmru" />
-            </el-select>
-            &ensp; &ensp; &ensp;
-            <!--房型选择-->
-            <el-select
-              v-model="form.roomtype"
-              placeholder="Room type"
-              style="width: 140px"
-            >
-              <el-option label="Single room" :value="form.type1" />
-              <el-option label="Whole set" :value="form.type2" />
-              <el-option label="House" :value="form.type3" />
-            </el-select>
-            &ensp; &ensp; &ensp;
-            <!--价格选择-->
-            <el-select
-              v-model="form.price"
-              placeholder="Price"
-              style="width: 140px"
-            >
-              <el-option label="Below 5000" :value="form.below" />
-              <el-option label="5000-10000" :value="form.period" />
-              <el-option label="Over 10000" :value="form.over" />
-            </el-select>
-            &ensp; &ensp; &ensp;
-            <!--价格选择-->
-            <el-select
-              v-model="form.acc"
-              placeholder="Shared acconmdation"
-              style="width: 180px"
-            >
-              <el-option label="Yes" :value="form.yes" />
-              <el-option label="No" :value="form.no" />
-            </el-select>
-            &ensp; &ensp; &ensp; &ensp; &ensp;
-            <!--添加Search 按钮搜索-->
-            <el-button type="primary" @click="search">Search</el-button>
-          </el-row>
-        </el-form>
+        <div>
+          <h3>My Cards</h3>
+        </div>
       </el-header>
       <!-- Main 主体区域-->
       <el-main>
@@ -215,8 +165,12 @@ export default {
 
   created() {
     console.log(localStorage.getItem("token"));
+    var localinfo = JSON.parse(localStorage.getItem("token"));
+    var tenant_id = localinfo.tenantid;
     //获取数据
-    Axios.get("http://13.214.205.122:8080/getCards")
+    Axios.get(
+      "http://13.214.205.122:8080/getCardsByTenantid?tenantid=" + tenant_id
+    )
       .then((res) => {
         // console.log(res);
         var cardsString = JSON.stringify(res);

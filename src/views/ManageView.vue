@@ -13,7 +13,7 @@
         </el-header>
         <el-main>
           <el-button type="primary" @click="add">Add Card </el-button>
-          <el-button type="primary" @click="rentcard">My Rent Card </el-button>
+          <el-button type="primary" @click="mycard">My Rent Card </el-button>
         </el-main>
       </el-container>
     </el-container>
@@ -34,6 +34,9 @@ export default {
   methods: {
     add() {
       this.$router.push({ name: "Addcard" });
+    },
+    mycard() {
+      this.$router.push({ name: "Mycard" });
     },
   },
 };

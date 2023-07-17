@@ -22,9 +22,10 @@
       <el-icon><setting /></el-icon>
       <el-button @click="chat"> Chat </el-button>
     </el-menu-item>
-    <el-meanu-item>
+    <el-menu-item>
+      <el-icon><setting /></el-icon>
       <el-button @click="logout"> Logout </el-button>
-    </el-meanu-item>
+    </el-menu-item>
   </el-menu>
 </template>
 

@@ -97,6 +97,7 @@ export default {
             email: res.email,
             landlordid: res.landlord.id,
             tenantid: res.tenant.id,
+            username: res.username,
           };
           //设置taken
           if (
