@@ -7,6 +7,8 @@ import ResetView from "../views/ResetView.vue";
 import RentView from "../views/RentView.vue";
 import Rentfound from "../views/RentfoundView.vue";
 import DetailView from "../views/DetailView.vue";
+import ManageView from "../views/ManageView.vue";
+import AddcardView from "../views/AddcardView.vue";
 
 const routes = [
   {
@@ -44,9 +46,10 @@ const routes = [
     children: [],
   },
   {
-    path: "/find/:house",
+    path: "/find/:houses",
     name: "Find",
     component: Rentfound,
+    props: true,
     // meta: {
     //   showFather: false,
     // },
@@ -55,6 +58,19 @@ const routes = [
     path: "/detail",
     name: "Detail",
     component: DetailView,
+    children: [],
+    props: true,
+  },
+  {
+    path: "/manage",
+    name: "Manage",
+    component: ManageView,
+    children: [],
+  },
+  {
+    path: "/addcard",
+    name: "Addcard",
+    component: AddcardView,
     children: [],
   },
 ];
