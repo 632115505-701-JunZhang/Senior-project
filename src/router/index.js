@@ -3,13 +3,13 @@ import HomeView from "../views/HomeView.vue";
 import LoginView from "../views/LoginView";
 import RegisterView from "../views/RegisterView.vue";
 import ForgetView from "../views/ForgetView.vue";
-import ResetView from "../views/ResetView.vue";
 import RentView from "../views/RentView.vue";
 import Rentfound from "../views/RentfoundView.vue";
 import DetailView from "../views/DetailView.vue";
 import ManageView from "../views/ManageView.vue";
 import AddcardView from "../views/AddcardView.vue";
 import MycardView from "../views/MycardView.vue";
+import ResetPasswordView from "../views/ResetPasswordView.vue";
 
 const routes = [
   {
@@ -34,11 +34,6 @@ const routes = [
     path: "/fpwd",
     name: "Fpwd",
     component: ForgetView,
-  },
-  {
-    path: "/resetpwd/:email",
-    name: "Resetpwd",
-    component: ResetView,
   },
   {
     path: "/rent",
@@ -79,6 +74,11 @@ const routes = [
     name: "Mycard",
     component: MycardView,
     children: [],
+  },
+  {
+    path: "/reset-password",
+    name: "Reset Password",
+    component: ResetPasswordView,
   },
 ];
 

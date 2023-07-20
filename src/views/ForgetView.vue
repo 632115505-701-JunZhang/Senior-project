@@ -69,18 +69,15 @@ export default {
 
     confirm() {
       Axios.get(
-        "http://13.214.205.122:8080/existEmail?email=" + this.form3.email
-      )
-        .then((res) => {
-          alert(res);
-          this.$router.push({
-            name: "Resetpwd",
-            params: { email: this.form3.email },
-          });
-        })
-        .catch((error) => {
-          alert(error);
-        });
+        "http://13.214.205.122:8080/forget-password?email=" + this.form3.email
+      ).then((res) => {
+        alert(res);
+
+        this.$router.push({ name: "Login" });
+      });
+      // .catch((error) => {
+
+      // });
     },
 
     //返回按钮
