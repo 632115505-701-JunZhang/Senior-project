@@ -7,7 +7,7 @@
     <el-container>
       <!-- Header 标头-->
       <el-header>
-        <h3 class="Rent_title">Rent</h3>
+        <h3 class="Rent_title">Add House</h3>
       </el-header>
       <!-- Main 主体区域-->
       <el-main>
@@ -15,7 +15,7 @@
           <template #header>
             <div class="card-header">
               <el-row>
-                <el-select v-model="house.city" placeholder="City">
+                <el-select v-model="house.area" placeholder="City">
                   <el-option label="Chiang Mai" :value="card.chiangmai" />
                   <!-- <el-option label="Bangkok" :value="card.bangkok" /> -->
                 </el-select>
@@ -31,104 +31,82 @@
           </template>
           <el-form rules="rules">
             <!--日期期间选择-->
-            <el-form-item label="Expect rent date">
-              <!--起始时间-->
-              <el-row>
-                <div class="demo-date-picker">
-                  <div class="block">
-                    <span class="demonstration">Start date</span>
-                    <el-date-picker
-                      v-model="house.start_time"
-                      type="date"
-                      placeholder="Pick a day"
-                      :size="size"
-                    />
-                  </div>
+            <el-form-item label="Rent date">
+              <br />
+              <div class="demo-date-picker">
+                <div class="block">
+                  <span class="demonstration">Start date</span>
+                  <el-date-picker
+                    v-model="house.start_time"
+                    type="date"
+                    placeholder="Pick a day"
+                    :size="size"
+                  />
                 </div>
-                <!--结束时间-->
-                <div class="demo-date-picker">
-                  <div class="block">
-                    <span class="demonstration">End date</span>
-                    <el-date-picker
-                      v-model="house.end_time"
-                      type="date"
-                      placeholder="Pick a day"
-                      :size="size"
-                    />
-                  </div>
+                <div class="block">
+                  <span class="demonstration">End date</span>
+                  <el-date-picker
+                    v-model="house.end_time"
+                    type="date"
+                    placeholder="Pick a day"
+                    :size="size"
+                  />
                 </div>
-              </el-row>
+              </div>
             </el-form-item>
             <!--房型选择-->
-            <el-form-item label="Expect room type">
+            <el-form-item label="Room type">
               <el-select v-model="house.room_type" placeholder="Room type">
                 <el-option label="Single room" :value="card.room_type_single" />
                 <el-option label="Whole set" :value="card.room_type_wholeSet" />
                 <el-option label="House" :value="card.room_type_house" />
               </el-select>
             </el-form-item>
-            <!--价格选择-->
-            <el-form-item label="Expect rent price">
+            <!--楼层输入-->
+            <el-form-item label="Floor" class="floor">
+              <el-input
+                class="floor-input"
+                v-model="house.floor"
+                placeholder="Please input floor"
+                clearable
+              />
+            </el-form-item>
+            <!--价格输入-->
+            <el-form-item label="Rent price">
               <el-input
                 v-model="house.price"
-                placeholder="Please input"
+                placeholder="Please input price"
+                clearable
+              />
+            </el-form-item>
+            <!--备注输入-->
+            <el-form-item label=" Mark" class="floor">
+              <el-input
+                class="floor-input"
+                v-model="house.mark"
+                placeholder="Please input mark"
                 clearable
               />
             </el-form-item>
           </el-form>
-          <el-button type="primary" @click="search">Search</el-button>
+          <UploadImages @changed="handleImages" style="width: 720px" />
+          <el-button type="primary" style="margin-top: 10px" @click="submit"
+            >Submit</el-button
+          >
         </el-card></el-main
       >
     </el-container>
   </el-container>
 </template>
-
-<style>
-el-aside {
-  background-color: #f0f0f0;
-}
-
-el-container {
-  flex: 1;
-  overflow: auto;
-  padding: 20px;
-}
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.demo-date-picker {
-  display: flex;
-  width: 100%;
-  padding: 0;
-  flex-wrap: wrap;
-}
-
-.demo-date-picker .block {
-  padding: 30px 0;
-  text-align: center;
-  border-right: solid 1px var(--el-border-color);
-  flex: 1;
-}
-
-.demo-date-picker .block:last-child {
-  border-right: none;
-}
-
-.demo-date-picker .demonstration {
-  display: block;
-  color: var(--el-text-color-secondary);
-  font-size: 14px;
-  margin-bottom: 20px;
-}
-</style>
-
 <script>
 import AsideCom from "../components/AsideCom.vue";
+import UploadImages from "vue-upload-drop-images";
 import HouseService from "../Services/HouseService";
 export default {
+  components: {
+    UploadImages,
+    AsideCom,
+  },
   data() {
     return {
       card: {
@@ -146,23 +124,22 @@ export default {
         end_time: "",
       },
       house: {
-        city: "",
         address: "",
         start_time: "",
         end_time: "",
         room_type: "",
         price: "",
+        area: "",
+        floor: "",
+        mark: "",
+        house_pic: [],
       },
+      files: [],
     };
   },
-
-  components: {
-    AsideCom,
-  },
-
   methods: {
     checkValues() {
-      if (!this.house.city) {
+      if (!this.house.area) {
         alert("Please select city");
         return false;
       }
@@ -190,27 +167,44 @@ export default {
         alert("Please select rent price");
         return false;
       }
+      if (!this.house.floor) {
+        alert("Please input floor");
+        return false;
+      }
+      if (!this.house.mark) {
+        alert("Please input mark");
+        return false;
+      }
       return true;
     },
-    search() {
+    submit() {
       if (!this.checkValues()) {
         return;
       }
+      var localinfo = JSON.parse(localStorage.getItem("token"));
+      this.house.landlord_id = localinfo.landlordid;
       this.house.start_time = this.formatDate(this.house.start_time);
       this.house.end_time = this.formatDate(this.house.end_time);
-      HouseService.houseSearch(this.house)
-        .then((response) => {
-          let res = response.data;
-          var housesString = JSON.stringify(res);
-          this.houses = JSON.parse(housesString);
-          this.$router.push({
-            name: "Find",
-            params: { houses: JSON.stringify(this.houses) },
-          });
+      console.log(this.house);
+      Promise.all(
+        this.files.map((file) => {
+          return HouseService.uploadFile(file);
         })
-        .catch((error) => {
-          alert(error.response.data);
-        });
+      ).then((response) => {
+        this.house.house_pic = response.map((r) => r.data);
+        console.log(this.house.house_pic);
+        HouseService.addHouse(this.house)
+          .then(() => {
+            alert("Success!");
+            this.$router.push({ name: "MyHouse" });
+          })
+          .catch((error) => {
+            alert(error.response.data);
+          });
+      });
+    },
+    handleImages(files) {
+      this.files = files;
     },
     formatDate(date) {
       if (date) {
@@ -225,3 +219,31 @@ export default {
   },
 };
 </script>
+
+<style>
+el-aside {
+  background-color: #f0f0f0;
+}
+
+el-container {
+  flex: 1;
+  overflow: auto;
+  padding: 20px;
+}
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.box-card {
+  width: 820px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.floor {
+  margin-left: 10px;
+}
+.floor-input {
+  margin-left: 22px;
+}
+</style>

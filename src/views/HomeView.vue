@@ -6,10 +6,9 @@
     </el-aside>
     <el-container class="card-container">
       <!-- Header 标头-->
-      <el-header>
-        <el-form :model="form" label-high="10px" class="conditon">
+      <el-header class="conditon1">
+        <el-form :model="form" label-high="10px">
           <el-row class="condition-set">
-            &ensp; &ensp; &ensp;&ensp; &ensp; &ensp;&ensp;
             <!--添加Reset 按钮搜索-->
             <el-button type="primary" @click="reset">Reset</el-button>
             &ensp; &ensp; &ensp;
@@ -54,7 +53,7 @@
               <el-option label="Yes" :value="form.yes" />
               <el-option label="No" :value="form.no" />
             </el-select>
-            &ensp; &ensp; &ensp; &ensp; &ensp;
+            &ensp; &ensp; &ensp;
             <!--添加Search 按钮搜索-->
             <el-button type="primary" @click="search">Search</el-button>
           </el-row>
@@ -62,8 +61,8 @@
       </el-header>
       <!-- Main 主体区域-->
       <el-main>
-        <el-card v-for="card in cards" class="Rentcard" :key="card.id">
-          <!-- <el-avatar :size="50" :src="card.avatar"> user </el-avatar> -->
+        <el-card v-for="card in cards" class="Rentcard1" :key="card.id">
+          <el-avatar :size="50" :src="card.img_pic"> user </el-avatar>
           <div>{{ card.tenant_name }}</div>
           <div>{{ card.address }}</div>
 
@@ -111,9 +110,14 @@
   margin-left: auto;
   margin-right: auto;
 }
-.Rentcard {
-  margin-bottom: 20px;
+.Rentcard1 {
+  margin-bottom: 40px;
+  height: 200px;
   width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.conditon1 {
   margin-left: auto;
   margin-right: auto;
 }
@@ -121,7 +125,7 @@
 
 <script>
 import AsideCom from "../components/AsideCom.vue";
-import Axios from "../Services/AxiosClient";
+import CardService from "../Services/CardService";
 
 export default {
   data() {
@@ -172,59 +176,39 @@ export default {
       return true;
     },
     reset() {
-      Axios.get("http://13.214.205.122:8080/getCards")
-        .then((res) => {
-          // console.log(res);
-          var cardsString = JSON.stringify(res);
-          this.cards = JSON.parse(cardsString);
-          // console.log(this.cards);
-        })
-        .catch((error) => {
-          alert(error);
-        });
+      location.reload();
     },
     search() {
       if (!this.checkValues()) {
         return;
       }
-      console.log("uni=" + this.form.university);
-      console.log("roomtype=" + this.form.roomtype);
-      console.log("price=" + this.form.price);
-      console.log("acc=" + this.form.acc);
-      Axios.get(
-        "http://13.214.205.122:8080/cardSearch?" +
-          "address=" +
-          this.form.university +
-          "&room_type=" +
-          this.form.roomtype +
-          "&price=" +
-          this.form.price +
-          "&share_accommodation=" +
-          this.form.acc
+      CardService.searchCards(
+        this.form.university,
+        this.form.roomtype,
+        this.form.price,
+        this.form.acc
       )
-        .then((res) => {
-          console.log(res);
+        .then((response) => {
+          let res = response.data;
           var cardsString = JSON.stringify(res);
           this.cards = JSON.parse(cardsString);
         })
         .catch((error) => {
-          alert(error);
+          alert(error.response.data);
         });
     },
   },
 
-  created() {
-    console.log(localStorage.getItem("token"));
-    //获取数据
-    Axios.get("http://13.214.205.122:8080/getCards")
-      .then((res) => {
-        // console.log(res);
+  mounted() {
+    CardService.getCards()
+      .then((response) => {
+        let res = response.data;
         var cardsString = JSON.stringify(res);
         this.cards = JSON.parse(cardsString);
-        // console.log(this.cards);
+        console.log(this.cards);
       })
       .catch((error) => {
-        alert(error);
+        alert(error.response.data);
       });
   },
 

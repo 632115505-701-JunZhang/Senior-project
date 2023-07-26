@@ -1,5 +1,6 @@
 <template>
   <el-menu default-active="2" class="el-menu-vertical-demo">
+    <el-avatar :size="50" :src="this.pic"> user </el-avatar>
     <el-menu-item index="1">
       <template #title>
         <el-icon><icon-menu /></el-icon>
@@ -22,6 +23,10 @@
       <el-icon><setting /></el-icon>
       <el-button @click="chat"> Chat </el-button>
     </el-menu-item>
+    <el-menu-item index="6">
+      <el-icon><setting /></el-icon>
+      <el-button @click="setting"> Setting </el-button>
+    </el-menu-item>
     <el-menu-item>
       <el-icon><setting /></el-icon>
       <el-button @click="logout"> Logout </el-button>
@@ -34,7 +39,9 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      pic: "",
+    };
   },
 
   methods: {
@@ -52,6 +59,17 @@ export default {
     manage() {
       this.$router.push({ name: "Manage" });
     },
+    myhouse() {
+      this.$router.push({ name: "MyHouse" });
+    },
+    setting() {
+      this.$router.push({ name: "setting" });
+    },
+  },
+  mounted() {
+    var localinfo = JSON.parse(localStorage.getItem("token"));
+    var pic = localinfo.pic;
+    this.pic = pic;
   },
 };
 </script>

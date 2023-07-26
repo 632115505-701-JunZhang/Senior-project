@@ -8,15 +8,15 @@
       <el-header>
         <div>
           <h3>My Cards</h3>
+          <h4>{{ this.username }}</h4>
+          <br />
         </div>
       </el-header>
       <!-- Main 主体区域-->
       <el-main>
         <el-card v-for="card in cards" class="Rentcard" :key="card.id">
           <!-- <el-avatar :size="50" :src="card.avatar"> user </el-avatar> -->
-          <div>{{ card.tenant_name }}</div>
-          <div>{{ card.address }}</div>
-
+          <div>{{ card.id }} {{ card.address }}</div>
           <el-table class="tabledata" :data="[card]" stripe style="width: 100%">
             <el-table-column label="Rentdate" width="180">
               <template v-slot="scope">
@@ -34,8 +34,15 @@
               label="Shared accommodation"
             />
           </el-table>
-
-          <!-- <el-button type="primary" @click="contact">Contact him</el-button> -->
+          <div class="button">
+            <el-button type="primary" @click="update(card)">Update</el-button>
+            <el-button
+              type="primary"
+              style="background-color: #e63f00"
+              @click="deletecard(card.id)"
+              >Delete</el-button
+            >
+          </div>
         </el-card>
       </el-main>
       <!-- <router-view></router-view> -->
@@ -62,42 +69,34 @@
   margin-right: auto;
 }
 .Rentcard {
-  margin-bottom: 20px;
-  width: 960px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 770px;
   margin-left: auto;
   margin-right: auto;
+  height: 173px;
+  position: relative;
+}
+.button {
+  display: flex;
+  position: absolute;
+  bottom: 10px;
+  right: 20px;
+  gap: 5px;
+}
+.button el-button:nth-child(2) {
+  margin-left: auto; /* 将第二个按钮向右推到最右边 */
 }
 </style>
 
 <script>
 import AsideCom from "../components/AsideCom.vue";
-import Axios from "../Services/AxiosClient";
-
+import CardService from "../Services/CardService";
 export default {
   data() {
     return {
-      form: {
-        cmu: "CMU",
-        cmru: "CMRU",
-        type1: "Single Room",
-        type2: "Whole Set",
-        type3: "House",
-        below: "5000",
-        period: "5000-10000",
-        over: "Over-10000",
-        yes: "Yes",
-        no: "No",
-        university: "",
-        roomtype: "",
-        price: "",
-        acc: "",
-      },
-      card: {
-        avatar: "",
-        username: "JACKSON",
-        address: "XJSIOKAJHNNDOIDOIAH",
-      },
       cards: [],
+      username: "",
     };
   },
 
@@ -121,67 +120,40 @@ export default {
       }
       return true;
     },
-    reset() {
-      Axios.get("http://13.214.205.122:8080/getCards")
-        .then((res) => {
-          // console.log(res);
-          var cardsString = JSON.stringify(res);
-          this.cards = JSON.parse(cardsString);
-          // console.log(this.cards);
-        })
-        .catch((error) => {
-          alert(error);
-        });
+    update(card) {
+      this.$router.push({
+        name: "UpdateCard",
+        query: { card: JSON.stringify(card) },
+      });
     },
-    search() {
-      if (!this.checkValues()) {
-        return;
+    deletecard(id) {
+      if (confirm("Are you sure you want to delete?")) {
+        CardService.deleteCardById(id)
+          .then((response) => {
+            alert(response.data);
+            location.reload();
+          })
+          .catch((error) => {
+            alert(error.response.data);
+          });
       }
-      console.log("uni=" + this.form.university);
-      console.log("roomtype=" + this.form.roomtype);
-      console.log("price=" + this.form.price);
-      console.log("acc=" + this.form.acc);
-      Axios.get(
-        "http://13.214.205.122:8080/cardSearch?" +
-          "address=" +
-          this.form.university +
-          "&room_type=" +
-          this.form.roomtype +
-          "&price=" +
-          this.form.price +
-          "&share_accommodation=" +
-          this.form.acc
-      )
-        .then((res) => {
-          console.log(res);
-          var cardsString = JSON.stringify(res);
-          this.cards = JSON.parse(cardsString);
-        })
-        .catch((error) => {
-          alert(error);
-        });
     },
   },
-
   created() {
-    console.log(localStorage.getItem("token"));
     var localinfo = JSON.parse(localStorage.getItem("token"));
     var tenant_id = localinfo.tenantid;
+    this.username = localinfo.username;
     //获取数据
-    Axios.get(
-      "http://13.214.205.122:8080/getCardsByTenantid?tenantid=" + tenant_id
-    )
-      .then((res) => {
-        // console.log(res);
+    CardService.getCardsByTenantId(tenant_id)
+      .then((response) => {
+        let res = response.data;
         var cardsString = JSON.stringify(res);
         this.cards = JSON.parse(cardsString);
-        // console.log(this.cards);
       })
       .catch((error) => {
-        alert(error);
+        alert(error.response.data);
       });
   },
-
   components: {
     AsideCom,
   },

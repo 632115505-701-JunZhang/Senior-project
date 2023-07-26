@@ -44,7 +44,7 @@
 </style>
 
 <script>
-import Axios from "../Services/AxiosClient";
+import UserService from "../Services/UserService";
 
 export default {
   data() {
@@ -68,15 +68,12 @@ export default {
     //确认邮箱功能
 
     confirm() {
-      Axios.get(
-        "http://13.214.205.122:8080/forget-password?email=" + this.form3.email
-      ).then((res) => {
+      UserService.forgetPassword(this.form3.email).then((response) => {
+        let res = response.data;
         alert(res);
-
         this.$router.push({ name: "Login" });
       });
       // .catch((error) => {
-
       // });
     },
 

@@ -10,7 +10,14 @@ import ManageView from "../views/ManageView.vue";
 import AddcardView from "../views/AddcardView.vue";
 import MycardView from "../views/MycardView.vue";
 import ResetPasswordView from "../views/ResetPasswordView.vue";
-
+import UploadView from "../views/UploadView.vue";
+import UpdateCardView from "../views/UpdateCardView.vue";
+import MyHouseView from "../views/MyHouseView.vue";
+import AddHouseView from "../views/AddHouseView.vue";
+import MyHousesView from "../views/MyHousesView.vue";
+import UpdateHouseView from "../views/UpdateHouseView.vue";
+import SettingView from "../views/SettingView.vue";
+import ProfileView from "../views/ProfileView.vue";
 const routes = [
   {
     path: "/",
@@ -79,6 +86,49 @@ const routes = [
     path: "/reset-password",
     name: "Reset Password",
     component: ResetPasswordView,
+  },
+  {
+    path: "/Upload",
+    name: "Upload",
+    component: UploadView,
+  },
+  {
+    path: "/UpdateCard",
+    name: "UpdateCard",
+    component: UpdateCardView,
+    props: true,
+  },
+  {
+    path: "/MyHouse",
+    name: "MyHouse",
+    component: MyHouseView,
+    props: true,
+  },
+  {
+    path: "/MyHouses",
+    name: "myHouses",
+    component: MyHousesView,
+  },
+  {
+    path: "/AddHouse",
+    name: "addHouse",
+    component: AddHouseView,
+  },
+  {
+    path: "/UpdateHouse",
+    name: "UpdateHouse",
+    component: UpdateHouseView,
+    props: true,
+  },
+  {
+    path: "/Setting",
+    name: "setting",
+    component: SettingView,
+  },
+  {
+    path: "/Profile",
+    name: "profile",
+    component: ProfileView,
   },
 ];
 

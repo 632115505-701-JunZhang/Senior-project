@@ -15,22 +15,29 @@
               <div class="card-header">
                 <span>
                   <div class="House_picture">
-                    <el-image
-                      style="width: 100px; height: 100px"
-                      :src="url"
-                      :zoom-rate="1.2"
-                      :preview-src-list="srcList"
-                      :initial-index="4"
-                      fit="cover"
-                    />
+                    <template v-if="this.isExist">
+                      <img
+                        class="img"
+                        v-for="url in this.house.house_pic"
+                        :key="url"
+                        :src="url"
+                      />
+                    </template>
+                    <template v-else>
+                      <el-image
+                        style="width: 100px; height: 100px"
+                        :src="url"
+                        :zoom-rate="1.2"
+                        :preview-src-list="srcList"
+                        :initial-index="4"
+                        fit="cover"
+                      />
+                    </template>
                   </div>
                 </span>
               </div>
             </template>
-            <el-descriptions
-              :title="this.house.landlord_name"
-              :data="this.house.landlord_name"
-            >
+            <el-descriptions :title="this.username" :data="this.username">
               <el-descriptions-item
                 label="University"
                 class="descriptions-item"
@@ -89,54 +96,40 @@
                 <el-tag size="small">{{ this.house.mark }}</el-tag>
               </el-descriptions-item>
               <el-descriptions-item label="Email" class="descriptions-item">
-                <el-tag size="small">{{ this.house.email }}</el-tag>
+                <el-tag size="small">{{ this.email }}</el-tag>
               </el-descriptions-item>
             </el-descriptions>
-            <el-button type="primary" @click="contact">Contact him</el-button>
+            <div class="button">
+              <el-button type="primary" @click="update(this.house)"
+                >Update</el-button
+              >
+              <el-button
+                type="primary"
+                style="background-color: #e63f00"
+                @click="deleteHouse(this.house.id)"
+                >Delete</el-button
+              >
+            </div>
+            <el-button v-if="!this.isSamePerson" type="primary" @click="contact"
+              >Contact him</el-button
+            >
           </el-card>
         </el-main>
       </el-container>
     </el-container>
   </div>
 </template>
-
-<style>
-.demo-image__lazy {
-  height: 400px;
-  overflow-y: auto;
-}
-.demo-image__lazy .el-image {
-  display: block;
-  min-height: 200px;
-  margin-bottom: 10px;
-}
-.demo-image__lazy .el-image:last-child {
-  margin-bottom: 0;
-}
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.House_Detail {
-  width: 960px;
-  margin-left: auto;
-  margin-right: auto;
-}
-.descriptions-item {
-  width: calc(100% / 3);
-  float: left;
-}
-</style>
-
 <script>
 import AsideCom from "../components/AsideCom.vue";
-import Axios from "../Services/AxiosClient";
-// import Axios from "../Services/AxiosClient";
+import HouseService from "../Services/HouseService";
 export default {
   data() {
     return {
       house: {},
+      username: "",
+      email: "",
+      isExist: true,
+      isSamePerson: false,
     };
   },
 
@@ -146,32 +139,79 @@ export default {
   mounted() {
     var houseString = JSON.parse(this.$route.query.house);
     this.house = houseString;
-    this.getuserinfo();
-    console.log(this.house);
-    console.log(this.house.id);
-    console.log(this.house.address);
+    var localinfo = JSON.parse(localStorage.getItem("token"));
+    var landlord_id = localinfo.landlordid;
+    if (this.house.landlord_id == landlord_id) this.isSamePerson = true;
+    this.getUserInfo();
+    if (this.house.house_pic[0] == "") this.isExist = false;
   },
   methods: {
-    getuserinfo() {
-      Axios.get(
-        "http://13.214.205.122:8080/userbylandlord/" + this.house.landlord_id
-      )
-        .then((res) => {
-          // console.log(res);
-          // var cardsString = JSON.stringify(res);
-          // this.cards = JSON.parse(cardsString);
-          this.house.email = res.email;
-          // console.log(this.cards);
+    getUserInfo() {
+      HouseService.getUserByLandlordId(this.house.landlord_id)
+        .then((response) => {
+          console.log(response.data);
+          this.email = response.data.email;
+          this.username = response.data.username;
         })
         .catch((error) => {
-          alert(error);
+          alert(error.response.data);
         });
     },
+    contact() {},
+    update(house) {
+      if (this.house.house_pic[0] == "") this.house.house_pic = [];
+      this.$router.push({
+        name: "UpdateHouse",
+        query: { house: JSON.stringify(house) },
+      });
+    },
+    deleteHouse(house_id) {
+      if (confirm("Are you sure you want to delete?")) {
+        HouseService.deleteHouseById(house_id)
+          .then((response) => {
+            alert(response.data);
+            this.$router.push({
+              name: "myHouses",
+            });
+          })
+          .catch((error) => {
+            alert(error.response.data);
+          });
+      }
+    },
   },
-  //   created() {
-  //     const urls = [
-  //       "C:\Users\Jackson\Desktop\毕业设计\Senior-project\src\assets\kunming.jpg",
-  //     ];
-  //   },
 };
 </script>
+
+<style>
+.card-header {
+  display: flex;
+  justify-content: space-between;
+}
+.House_Detail {
+  width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+}
+.descriptions-item {
+  width: calc(100% / 3);
+  float: left;
+}
+.img {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  margin-right: 30px;
+}
+.button {
+  display: flex;
+  position: absolute;
+  bottom: 10px;
+  right: 20px;
+  gap: 5px;
+}
+.button el-button:nth-child(2) {
+  margin-left: auto; /* 将第二个按钮向右推到最右边 */
+}
+</style>

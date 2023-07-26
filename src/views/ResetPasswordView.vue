@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import UserService from "../Services/UserService";
 export default {
   data() {
     return {
@@ -30,35 +31,24 @@ export default {
   },
   methods: {
     resetPassword() {
-      console.log(this.token);
-      console.log(this.newPassword);
       if (!this.newPassword) {
         alert("new password does not be empty");
         return;
       }
+      let newPassword = this.newPassword;
+      let token = this.token;
+      let body = JSON.stringify({
+        newPassword,
+        token,
+      });
       // 发起 POST 请求到后端
-      fetch("http://13.214.205.122:8080/reset-password", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          newPassword: this.newPassword,
-          token: this.token,
-        }),
-      })
+      UserService.resetPassword(body)
         .then((response) => {
-          // 根据后端返回的结果进行处理
-          if (response.ok) {
-            alert(response.data);
-            this.$router.push({ name: "Login" });
-            // 可以跳转到登录页面或其他操作
-          } else {
-            alert("Failed,please retry.");
-          }
+          alert(response.data);
+          this.$router.push({ name: "Login" });
         })
         .catch((error) => {
-          console.error("error:", error);
+          console.error("error:", error.response.data);
         });
     },
   },

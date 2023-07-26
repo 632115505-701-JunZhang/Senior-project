@@ -9,6 +9,9 @@
           <h3 class="Rentcard">Rent Card</h3>
         </el-header>
         <el-main class="cardmain">
+          <!-- <el-radio-group v-model="labelPosition" label="label position">
+              <el-radio-button label="right">Right</el-radio-button>
+            </el-radio-group> -->
           <el-form label-width="200px" :model="form" style="max-width: 460px">
             <el-form-item label="University">
               <el-input
@@ -57,7 +60,7 @@
             </el-form-item>
           </el-form>
           <el-button>
-            <el-button type="primary" @click="rentcard">Upload</el-button>
+            <el-button type="primary" @click="rentCard">Upload</el-button>
           </el-button>
         </el-main>
       </el-container>
@@ -122,16 +125,17 @@ export default {
   components: {
     AsideCom,
   },
+  mounted() {
+    var cardString = JSON.parse(this.$route.query.card);
+    this.card = cardString;
+  },
   methods: {
-    rentcard() {
+    rentCard() {
       if (!this.checkValues()) return;
-      var localinfo = JSON.parse(localStorage.getItem("token"));
-      this.card.tenant_id = localinfo.tenantid;
-      this.card.tenant_name = localinfo.username;
-      CardService.setCard(this.card)
+      CardService.updateCard(this.card)
         .then(() => {
           alert("Success!");
-          location.reload();
+          this.$router.push({ name: "Mycard" });
         })
         .catch((error) => {
           alert(error.response.data);

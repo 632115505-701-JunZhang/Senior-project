@@ -72,7 +72,7 @@
 </style>
 
 <script>
-import Axios from "../Services/AxiosClient";
+import UserService from "../Services/UserService";
 export default {
   data() {
     return {
@@ -117,14 +117,14 @@ export default {
   },
   methods: {
     register() {
-      Axios.post("http://13.214.205.122:8080/register", this.form2)
-        .then((res) => {
-          console.log(res);
+      UserService.register(this.form2)
+        .then((response) => {
+          let res = response.data;
           alert(res);
           this.$router.push({ name: "Login" });
         })
         .catch((error) => {
-          alert(error);
+          alert(error.response.data);
         });
     },
     cancel() {

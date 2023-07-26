@@ -6,13 +6,19 @@
         <router-view> </router-view>
       </el-aside>
       <el-container>
-        <el-header>
-          <h3 class="Rentfind_title">Rent Find</h3>
+        <el-header style="margin-bottom: 10px">
+          <h3 class="Rentfind_title">My Houses</h3>
+          <h4>{{ this.username }}</h4>
+          <br />
         </el-header>
         <el-main>
-          <el-card v-for="house in houses" class="Housecard" :key="house.id">
+          <el-card
+            v-for="house in this.houses"
+            class="Housecard"
+            :key="house.id"
+          >
             <!-- <el-avatar :size="50" :src="card.avatar"> user </el-avatar> -->
-            <div>{{ house.landlord_name }}</div>
+
             <div>{{ house.address }}</div>
 
             <el-table
@@ -73,19 +79,32 @@
 
 <script>
 import AsideCom from "../components/AsideCom.vue";
+import HouseService from "../Services/HouseService";
 export default {
   data() {
     return {
       houses: [],
       house: {},
+      username: "",
     };
   },
   components: {
     AsideCom,
   },
-  created() {
-    const housesString = this.$route.params.houses;
-    this.houses = JSON.parse(housesString);
+  mounted() {
+    var localInfo = JSON.parse(localStorage.getItem("token"));
+    var landlordId = localInfo.landlordid;
+    this.username = localInfo.username;
+    console.log(landlordId);
+    HouseService.getMyhouseByLandlordId(landlordId)
+      .then((response) => {
+        let res = response.data;
+        var housesString = JSON.stringify(res);
+        this.houses = JSON.parse(housesString);
+      })
+      .catch((error) => {
+        alert(error.response.data);
+      });
   },
   methods: {
     handleClick(house) {

@@ -57,7 +57,7 @@
 </style>
 
 <script>
-import Axios from "../Services/AxiosClient";
+import UserService from "../Services/UserService";
 
 export default {
   data() {
@@ -88,9 +88,9 @@ export default {
   methods: {
     // 登录
     submitForm() {
-      Axios.post("http://13.214.205.122:8080/login", this.form1)
-        .then((res) => {
-          console.log(this.form1);
+      UserService.login(this.form1)
+        .then((response) => {
+          let res = response.data;
           //转换字符串
           let rowval = {
             id: res.id,
@@ -98,6 +98,7 @@ export default {
             landlordid: res.landlord.id,
             tenantid: res.tenant.id,
             username: res.username,
+            pic: res.pic,
           };
           //设置taken
           if (
@@ -112,7 +113,7 @@ export default {
           }
         })
         .catch((error) => {
-          alert(error);
+          alert(error.response.data);
         });
     },
     register() {
