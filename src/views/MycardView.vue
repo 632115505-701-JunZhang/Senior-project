@@ -129,8 +129,8 @@ export default {
     deletecard(id) {
       if (confirm("Are you sure you want to delete?")) {
         CardService.deleteCardById(id)
-          .then((response) => {
-            alert(response.data);
+          .then(() => {
+            alert("Success");
             location.reload();
           })
           .catch((error) => {

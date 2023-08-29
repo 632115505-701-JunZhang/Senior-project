@@ -86,6 +86,7 @@ export default {
   created() {
     const housesString = this.$route.params.houses;
     this.houses = JSON.parse(housesString);
+    console.log(this.houses);
   },
   methods: {
     handleClick(house) {

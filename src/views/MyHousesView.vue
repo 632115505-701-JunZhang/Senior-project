@@ -19,7 +19,7 @@
           >
             <!-- <el-avatar :size="50" :src="card.avatar"> user </el-avatar> -->
 
-            <div>{{ house.address }}</div>
+            <div>{{ house.university }}</div>
 
             <el-table
               class="tabledata"

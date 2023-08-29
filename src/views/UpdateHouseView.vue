@@ -7,7 +7,7 @@
     <el-container>
       <!-- Header 标头-->
       <el-header>
-        <h3 class="Rent_title">Add House</h3>
+        <h3 class="Rent_title">Update House</h3>
       </el-header>
       <!-- Main 主体区域-->
       <el-main>

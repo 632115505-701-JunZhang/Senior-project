@@ -18,6 +18,7 @@ import MyHousesView from "../views/MyHousesView.vue";
 import UpdateHouseView from "../views/UpdateHouseView.vue";
 import SettingView from "../views/SettingView.vue";
 import ProfileView from "../views/ProfileView.vue";
+import ChatView from "../views/ChatView.vue";
 const routes = [
   {
     path: "/",
@@ -129,6 +130,11 @@ const routes = [
     path: "/Profile",
     name: "profile",
     component: ProfileView,
+  },
+  {
+    path: "/Chat",
+    name: "chat",
+    component: ChatView,
   },
 ];
 

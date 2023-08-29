@@ -8,7 +8,7 @@
       <el-container>
         <el-header>
           <div>
-            <h3 class="Manage">Manage</h3>
+            <h3 class="Manage">Card Manage</h3>
           </div>
         </el-header>
         <el-main>

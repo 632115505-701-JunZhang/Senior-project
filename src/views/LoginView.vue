@@ -58,10 +58,11 @@
 
 <script>
 import UserService from "../Services/UserService";
-
 export default {
   data() {
     return {
+      address: "",
+      places: [],
       form1: {
         email: "",
         password: "",
@@ -98,7 +99,6 @@ export default {
             landlordid: res.landlord.id,
             tenantid: res.tenant.id,
             username: res.username,
-            pic: res.pic,
           };
           //设置taken
           if (

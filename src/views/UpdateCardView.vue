@@ -6,7 +6,7 @@
       ></el-aside>
       <el-container>
         <el-header>
-          <h3 class="Rentcard">Rent Card</h3>
+          <h3 class="Rentcard">Update Card</h3>
         </el-header>
         <el-main class="cardmain">
           <!-- <el-radio-group v-model="labelPosition" label="label position">
@@ -133,7 +133,9 @@ export default {
     rentCard() {
       if (!this.checkValues()) return;
       CardService.updateCard(this.card)
-        .then(() => {
+        .then((response) => {
+          console.log(this.card);
+          console.log(response.data);
           alert("Success!");
           this.$router.push({ name: "Mycard" });
         })

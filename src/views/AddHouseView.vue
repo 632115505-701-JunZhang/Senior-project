@@ -15,17 +15,20 @@
           <template #header>
             <div class="card-header">
               <el-row>
-                <el-select v-model="house.area" placeholder="City">
-                  <el-option label="Chiang Mai" :value="card.chiangmai" />
-                  <!-- <el-option label="Bangkok" :value="card.bangkok" /> -->
-                </el-select>
-                &ensp; &ensp; &ensp;
                 <!--学校选择-->
-                <el-select v-model="house.address" placeholder="University">
+                <el-select v-model="house.university" placeholder="University">
                   <el-option label="CMU" :value="card.cmu" />
                   <el-option label="CMRU" :value="card.cmru" />
                 </el-select>
                 &ensp; &ensp; &ensp;
+                <el-form-item label="Address" class="floor">
+                  <el-input
+                    class="floor-input"
+                    v-model="house.address"
+                    placeholder="Please input address"
+                    clearable
+                  />
+                </el-form-item>
               </el-row>
             </div>
           </template>
@@ -61,6 +64,14 @@
                 <el-option label="Whole set" :value="card.room_type_wholeSet" />
                 <el-option label="House" :value="card.room_type_house" />
               </el-select>
+            </el-form-item>
+            <el-form-item label="Area" class="floor">
+              <el-input
+                class="floor-input"
+                v-model="house.area"
+                placeholder="Please input area"
+                clearable
+              />
             </el-form-item>
             <!--楼层输入-->
             <el-form-item label="Floor" class="floor">
@@ -135,6 +146,9 @@ export default {
         house_pic: [],
       },
       files: [],
+      googleMapsApiKey: "AIzaSyBHyKXhwil46KfAGx7SmI7Lj7Q2qxrYhs4",
+      map: null,
+      marker: null,
     };
   },
   methods: {
@@ -185,7 +199,6 @@ export default {
       this.house.landlord_id = localinfo.landlordid;
       this.house.start_time = this.formatDate(this.house.start_time);
       this.house.end_time = this.formatDate(this.house.end_time);
-      console.log(this.house);
       Promise.all(
         this.files.map((file) => {
           return HouseService.uploadFile(file);
@@ -195,6 +208,7 @@ export default {
         console.log(this.house.house_pic);
         HouseService.addHouse(this.house)
           .then(() => {
+            console.log(this.house);
             alert("Success!");
             this.$router.push({ name: "MyHouse" });
           })

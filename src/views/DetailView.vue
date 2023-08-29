@@ -43,17 +43,8 @@
                 class="descriptions-item"
               >
                 <el-tag size="small">{{
-                  this.house.address
+                  this.house.university
                 }}</el-tag></el-descriptions-item
-              >
-              <el-descriptions-item
-                label="Address"
-                :class="descriptions - item"
-              >
-                <el-tag size="small">{{ this.house.address }}</el-tag>
-                <span style="opacity: 0"
-                  >Extra characters111111</span
-                ></el-descriptions-item
               >
               >
               <!-- <el-descriptions-item label="Location">{{
@@ -98,8 +89,17 @@
               <el-descriptions-item label="Email" class="descriptions-item">
                 <el-tag size="small">{{ this.email }}</el-tag>
               </el-descriptions-item>
+              <el-descriptions-item
+                label="Address"
+                :class="descriptions - item"
+              >
+                <el-tag size="small">{{ this.house.address }}</el-tag>
+                <span style="opacity: 0"
+                  >Extra characters111111</span
+                ></el-descriptions-item
+              >
             </el-descriptions>
-            <div class="button">
+            <div class="button" v-if="this.isSamePerson">
               <el-button type="primary" @click="update(this.house)"
                 >Update</el-button
               >

@@ -15,13 +15,13 @@
           <template #header>
             <div class="card-header">
               <el-row>
-                <el-select v-model="house.city" placeholder="City">
+                <el-select v-model="house.city" disabled>
                   <el-option label="Chiang Mai" :value="card.chiangmai" />
                   <!-- <el-option label="Bangkok" :value="card.bangkok" /> -->
                 </el-select>
                 &ensp; &ensp; &ensp;
                 <!--学校选择-->
-                <el-select v-model="house.address" placeholder="University">
+                <el-select v-model="house.university" placeholder="University">
                   <el-option label="CMU" :value="card.cmu" />
                   <el-option label="CMRU" :value="card.cmru" />
                 </el-select>
@@ -132,7 +132,7 @@ export default {
   data() {
     return {
       card: {
-        chiangmai: "Chiang-Mai",
+        chiangmai: "Chiang Mai",
         bangkok: "Bangkok",
         cmu: "CMU",
         cmru: "CMRU",
@@ -146,8 +146,8 @@ export default {
         end_time: "",
       },
       house: {
-        city: "",
-        address: "",
+        city: "Chiang Mai",
+        university: "",
         start_time: "",
         end_time: "",
         room_type: "",
@@ -166,7 +166,7 @@ export default {
         alert("Please select city");
         return false;
       }
-      if (!this.house.address) {
+      if (!this.house.university) {
         alert("Please select university");
         return false;
       }
@@ -198,6 +198,7 @@ export default {
       }
       this.house.start_time = this.formatDate(this.house.start_time);
       this.house.end_time = this.formatDate(this.house.end_time);
+      console.log(this.house);
       HouseService.houseSearch(this.house)
         .then((response) => {
           let res = response.data;

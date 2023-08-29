@@ -8,13 +8,10 @@
       <el-container>
         <el-header>
           <div>
-            <h3>House Manage</h3>
+            <h3>Chat</h3>
           </div>
         </el-header>
-        <el-main>
-          <el-button type="primary" @click="add">Add House </el-button>
-          <el-button type="primary" @click="myHouse">My House </el-button>
-        </el-main>
+        <el-main> </el-main>
       </el-container>
     </el-container>
   </div>
@@ -31,15 +28,6 @@ export default {
   components: {
     AsideCom,
   },
-  methods: {
-    add() {
-      this.$router.push({ name: "addHouse" });
-    },
-    myHouse() {
-      this.$router.push({
-        name: "myHouses",
-      });
-    },
-  },
+  methods: {},
 };
 </script>

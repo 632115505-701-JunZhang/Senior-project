@@ -84,7 +84,7 @@
             />
           </el-table>
 
-          <!-- <el-button type="primary" @click="contact">Contact him</el-button> -->
+          <el-button type="primary" @click="contact">Contact him</el-button>
         </el-card>
       </el-main>
       <!-- <router-view></router-view> -->
@@ -112,7 +112,7 @@
 }
 .Rentcard1 {
   margin-bottom: 40px;
-  height: 200px;
+  height: 230px;
   width: 960px;
   margin-left: auto;
   margin-right: auto;
@@ -182,6 +182,13 @@ export default {
       if (!this.checkValues()) {
         return;
       }
+      const card = {
+        address: this.form.university,
+        room_type: this.form.roomtype,
+        price: this.form.price,
+        share_accommodation: this.form.acc,
+      };
+      console.log(card);
       CardService.searchCards(
         this.form.university,
         this.form.roomtype,
@@ -192,6 +199,7 @@ export default {
           let res = response.data;
           var cardsString = JSON.stringify(res);
           this.cards = JSON.parse(cardsString);
+          console.log(this.cards);
         })
         .catch((error) => {
           alert(error.response.data);

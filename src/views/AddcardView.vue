@@ -6,7 +6,7 @@
       ></el-aside>
       <el-container>
         <el-header>
-          <h3 class="Rentcard">Rent Card</h3>
+          <h3 class="Rentcard">Add Card</h3>
         </el-header>
         <el-main class="cardmain">
           <el-form label-width="200px" :model="form" style="max-width: 460px">
@@ -129,8 +129,10 @@ export default {
       this.card.tenant_id = localinfo.tenantid;
       this.card.tenant_name = localinfo.username;
       CardService.setCard(this.card)
-        .then(() => {
+        .then((response) => {
+          console.log(this.card);
           alert("Success!");
+          console.log(response.data);
           location.reload();
         })
         .catch((error) => {
