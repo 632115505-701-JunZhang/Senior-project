@@ -63,7 +63,7 @@
       <el-main>
         <el-card v-for="card in cards" class="Rentcard1" :key="card.id">
           <el-avatar :size="50" :src="card.img_pic"> user </el-avatar>
-          <div>{{ card.tenant_name }}</div>
+          <div>{{ card.user_name }}</div>
           <div>{{ card.address }}</div>
 
           <el-table class="tabledata" :data="[card]" stripe style="width: 100%">

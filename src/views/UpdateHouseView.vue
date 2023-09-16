@@ -15,17 +15,16 @@
           <template #header>
             <div class="card-header">
               <el-row>
-                <el-select v-model="house.area" placeholder="City">
-                  <el-option label="Chiang Mai" :value="card.chiangmai" />
-                  <!-- <el-option label="Bangkok" :value="card.bangkok" /> -->
-                </el-select>
-                &ensp; &ensp; &ensp;
                 <!--学校选择-->
-                <el-select v-model="house.address" placeholder="University">
-                  <el-option label="CMU" :value="card.cmu" />
-                  <el-option label="CMRU" :value="card.cmru" />
-                </el-select>
-                &ensp; &ensp; &ensp;
+                <el-form-item label="University">
+                  <el-select
+                    v-model="house.university"
+                    placeholder="University"
+                  >
+                    <el-option label="CMU" :value="card.cmu" />
+                    <el-option label="CMRU" :value="card.cmru" />
+                  </el-select>
+                </el-form-item>
               </el-row>
             </div>
           </template>
@@ -54,6 +53,24 @@
                 </div>
               </div>
             </el-form-item>
+            <!-- 地址输入 -->
+            <el-form-item label="Address" class="floor">
+              <el-button type="primary" @click.prevent="openWindow"
+                >Location</el-button
+              >
+              <div v-if="isWindowOpen" class="window">
+                <button @click.prevent="closeWindow" class="close-button">
+                  Close
+                </button>
+                <iframe src="/maps.html" @load="setupMap"></iframe>
+              </div>
+              <el-input
+                class="address"
+                v-model="house.address"
+                placeholder="Please input address"
+                clearable
+              />
+            </el-form-item>
             <!--房型选择-->
             <el-form-item label="Room type">
               <el-select v-model="house.room_type" placeholder="Room type">
@@ -61,6 +78,15 @@
                 <el-option label="Whole set" :value="card.room_type_wholeSet" />
                 <el-option label="House" :value="card.room_type_house" />
               </el-select>
+            </el-form-item>
+            <!-- 面积选择 -->
+            <el-form-item label="Area" class="floor">
+              <el-input
+                class="floor-input"
+                v-model="house.area"
+                placeholder="Please input area"
+                clearable
+              />
             </el-form-item>
             <!--楼层输入-->
             <el-form-item label="Floor" class="floor">
@@ -142,6 +168,7 @@ export default {
         house_pic: [],
       },
       files: [],
+      isWindowOpen: false,
     };
   },
   mounted() {
@@ -149,13 +176,33 @@ export default {
     this.house = HouseString;
   },
   methods: {
+    openWindow() {
+      this.isWindowOpen = true;
+    },
+    closeWindow() {
+      this.isWindowOpen = false;
+    },
+    setupMap() {
+      const iframe = document.querySelector("iframe");
+      const mapWindow = iframe.contentWindow;
+      const confirm = mapWindow.document.getElementById("confirm");
+      confirm.addEventListener("click", () => {
+        const address = mapWindow.document.getElementById("autocomplete").value;
+        if (address != "") {
+          this.house.address = address;
+          this.closeWindow();
+        } else {
+          alert("The place can't be empty");
+        }
+      });
+    },
     checkValues() {
-      if (!this.house.area) {
-        alert("Please select city");
+      if (!this.house.university) {
+        alert("Please select university");
         return false;
       }
       if (!this.house.address) {
-        alert("Please select university");
+        alert("Please select address");
         return false;
       }
       if (!this.house.start_time) {
@@ -267,5 +314,60 @@ el-container {
   height: 180px;
   object-fit: contain;
   margin-right: 10px;
+}
+.address {
+  margin-left: 3px;
+  margin-top: 10px;
+}
+.window {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  border: 20px solid #ccc;
+  border-radius: 10px; /* 添加圆角 */
+  background-color: #fff;
+  z-index: 1000;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  /* 根据地图的大小设置窗口的宽度和高度 */
+  width: 800px; /* 自适应宽度 */
+  height: 640px; /* 自适应高度 */
+  max-width: 100%; /* 最大宽度为100% */
+  max-height: 100%; /* 最大高度为100% */
+}
+
+/* 打开按钮样式 */
+.open-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.open-button:hover {
+  background-color: #0056b3;
+}
+/* 关闭按钮样式 */
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 10px;
+  background-color: #ff5722;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  background-color: #d84315;
+}
+
+.window iframe {
+  width: 100%;
+  height: 100%;
 }
 </style>

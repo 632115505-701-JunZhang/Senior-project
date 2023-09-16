@@ -19,11 +19,11 @@ export default {
   updateHouse(house) {
     return apiClient.post("/updateHouse", house);
   },
-  getUserByLandlordId(id) {
-    return apiClient.get("/userbylandlord/" + id);
+  getUserById(id) {
+    return apiClient.get("/getUserById/" + id);
   },
-  getMyhouseByLandlordId(id) {
-    return apiClient.get("/getHouseByLandlordId?landlord_id=" + id);
+  getHouseByUserId(id) {
+    return apiClient.get("/getHouseByUserId?id=" + id);
   },
   deleteHouseById(id) {
     return apiClient.get("/deleteHouseById?house_id=" + id);

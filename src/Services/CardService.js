@@ -29,8 +29,8 @@ export default {
   setCard(card) {
     return apiClient.post("/setCard", card);
   },
-  getCardsByTenantId(id) {
-    return apiClient.get("/getCardsByTenantid?tenantid=" + id);
+  getCardsByUserId(id) {
+    return apiClient.get("/getCardsByUserId?id=" + id);
   },
   deleteCardById(id) {
     return apiClient.get("/deleteCard?id=" + id);

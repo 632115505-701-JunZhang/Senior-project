@@ -12,7 +12,7 @@
         <el-main>
           <el-card v-for="house in houses" class="Housecard" :key="house.id">
             <!-- <el-avatar :size="50" :src="card.avatar"> user </el-avatar> -->
-            <div>{{ house.landlord_name }}</div>
+            <!-- <div>{{ house.landlord_name }}</div> -->
             <div>{{ house.address }}</div>
 
             <el-table

@@ -93,10 +93,9 @@ export default {
   },
   mounted() {
     var localInfo = JSON.parse(localStorage.getItem("token"));
-    var landlordId = localInfo.landlordid;
+    var user_id = localInfo.id;
     this.username = localInfo.username;
-    console.log(landlordId);
-    HouseService.getMyhouseByLandlordId(landlordId)
+    HouseService.getHouseByUserId(user_id)
       .then((response) => {
         let res = response.data;
         var housesString = JSON.stringify(res);

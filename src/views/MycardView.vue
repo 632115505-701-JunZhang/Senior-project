@@ -141,10 +141,10 @@ export default {
   },
   created() {
     var localinfo = JSON.parse(localStorage.getItem("token"));
-    var tenant_id = localinfo.tenantid;
+    var user_id = localinfo.id;
     this.username = localinfo.username;
     //获取数据
-    CardService.getCardsByTenantId(tenant_id)
+    CardService.getCardsByUserId(user_id)
       .then((response) => {
         let res = response.data;
         var cardsString = JSON.stringify(res);

@@ -38,6 +38,11 @@
         <el-button type="primary" @click="register">Register</el-button>
       </el-row>
     </el-form-item>
+    <!-- <button @click.prevent="openWindow">Oopen</button> -->
+    <div v-if="isWindowOpen" class="window">
+      <button @click.prevent="closeWindow" class="close-button">Close</button>
+      <iframe src="/maps.html" @load="setupMap"></iframe>
+    </div>
   </el-form>
 </template>
 
@@ -54,6 +59,57 @@
 .el-input {
   width: 198px;
 }
+.window {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  border: 20px solid #ccc;
+  border-radius: 10px; /* 添加圆角 */
+  background-color: #fff;
+  z-index: 1000;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  /* 根据地图的大小设置窗口的宽度和高度 */
+  width: 800px; /* 自适应宽度 */
+  height: 640px; /* 自适应高度 */
+  max-width: 100%; /* 最大宽度为100% */
+  max-height: 100%; /* 最大高度为100% */
+}
+
+/* 打开按钮样式 */
+.open-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.open-button:hover {
+  background-color: #0056b3;
+}
+/* 关闭按钮样式 */
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 10px;
+  background-color: #ff5722;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  background-color: #d84315;
+}
+
+.window iframe {
+  width: 100%;
+  height: 100%;
+}
 </style>
 
 <script>
@@ -61,8 +117,7 @@ import UserService from "../Services/UserService";
 export default {
   data() {
     return {
-      address: "",
-      places: [],
+      isWindowOpen: false,
       form1: {
         email: "",
         password: "",
@@ -87,6 +142,26 @@ export default {
     };
   },
   methods: {
+    openWindow() {
+      this.isWindowOpen = true;
+    },
+    closeWindow() {
+      this.isWindowOpen = false;
+    },
+    setupMap() {
+      const iframe = document.querySelector("iframe");
+      const mapWindow = iframe.contentWindow;
+      const confirm = mapWindow.document.getElementById("confirm");
+      confirm.addEventListener("click", () => {
+        const address = mapWindow.document.getElementById("autocomplete").value;
+        if (address != "") {
+          console.log(address);
+          this.closeWindow();
+        } else {
+          alert("The place can't be empty");
+        }
+      });
+    },
     // 登录
     submitForm() {
       UserService.login(this.form1)
@@ -96,8 +171,8 @@ export default {
           let rowval = {
             id: res.id,
             email: res.email,
-            landlordid: res.landlord.id,
-            tenantid: res.tenant.id,
+            // landlordid: res.landlord.id,
+            // tenantid: res.tenant.id,
             username: res.username,
           };
           //设置taken

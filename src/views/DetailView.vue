@@ -140,14 +140,14 @@ export default {
     var houseString = JSON.parse(this.$route.query.house);
     this.house = houseString;
     var localinfo = JSON.parse(localStorage.getItem("token"));
-    var landlord_id = localinfo.landlordid;
-    if (this.house.landlord_id == landlord_id) this.isSamePerson = true;
+    var user_id = localinfo.id;
+    if (this.house.user_id == user_id) this.isSamePerson = true;
     this.getUserInfo();
     if (this.house.house_pic[0] == "") this.isExist = false;
   },
   methods: {
     getUserInfo() {
-      HouseService.getUserByLandlordId(this.house.landlord_id)
+      HouseService.getUserById(this.house.user_id)
         .then((response) => {
           console.log(response.data);
           this.email = response.data.email;

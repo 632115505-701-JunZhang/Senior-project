@@ -117,8 +117,6 @@ export default {
         price: "",
         share_accommodation: "",
         expect_date: "",
-        tenant_name: "",
-        tenant_id: "",
       },
     };
   },

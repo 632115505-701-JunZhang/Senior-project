@@ -1,0 +1,59 @@
+#map {
+    margin-top: 10px;
+    height: 500px;
+    width: 100%;
+    border: 1px solid #ccc;
+}
+#button {
+    margin-top: 20px;
+    height: 20px; /* 调整高度，以适应更好 */
+    width: 200px;
+    background-color: #007bff; /* 修改背景颜色为蓝色 */
+    font-size: 16px; /* 修改字体大小 */
+    color: #fff; /* 修改文字颜色为白色 */
+    padding: 10px 16px; /* 减小内边距以适应按钮 */
+    text-align: center;
+    border: none; /* 移除按钮边框 */
+    border-radius: 5px; /* 添加圆角 */
+    cursor: pointer;
+}
+#confirm {
+    margin-top: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 40px;
+    width: 200px;
+    background-color: #007bff; /* 修改背景颜色为蓝色 */
+    font-size: 16px; /* 修改字体大小 */
+    color: #fff; /* 修改文字颜色为白色 */
+    padding: 10px 16px; /* 减小内边距以适应按钮 */
+    text-align: center;
+    border: none; /* 移除按钮边框 */
+    border-radius: 5px; /* 添加圆角 */
+    cursor: pointer;
+    display: block;
+}
+#button:hover {
+    background-color: #0056b3; /* 鼠标悬停时的颜色变化 */
+}
+#autocomplete {
+    width: 70%;
+    height: 30px;
+    padding: 10px;
+    border-radius: 5px; /* 添加圆角 */
+    border: 1px solid #ccc; /* 添加边框 */
+}
+
+#search-button {
+    height: 40px;
+    width: 200px;
+    border: none;
+    border-radius: 5px; /* 添加圆角 */
+    background-color: #007bff; /* 修改按钮颜色为蓝色 */
+    color: #fff; /* 修改按钮文字颜色为白色 */
+    cursor: pointer;
+}
+
+#search-button:hover {
+    background-color: #0056b3; /* 鼠标悬停时的颜色变化 */
+}
