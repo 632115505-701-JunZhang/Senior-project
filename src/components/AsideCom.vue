@@ -1,6 +1,6 @@
 <template>
   <el-menu default-active="2" class="el-menu-vertical-demo">
-    <el-menu-item index="1">
+    <el-menu-item index="1" v-if="isTenant">
       <template #title>
         <el-icon><icon-menu /></el-icon>
         <el-button @click="home"> Home </el-button>
@@ -10,11 +10,11 @@
       <el-icon><icon-menu /></el-icon>
       <el-button @click="rent"> Rent </el-button>
     </el-menu-item>
-    <el-menu-item index="3">
+    <el-menu-item index="3" v-if="isTenant">
       <el-icon><icon-menu /></el-icon>
       <el-button @click="manage"> Card Manage </el-button>
     </el-menu-item>
-    <el-menu-item index="4">
+    <el-menu-item index="4" v-if="!isTenant">
       <el-icon><setting /></el-icon>
       <el-button @click="myhouse"> House Manage </el-button>
     </el-menu-item>
@@ -38,9 +38,17 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      isTenant: false,
+    };
   },
-
+  mounted() {
+    var localinfo = JSON.parse(localStorage.getItem("token"));
+    var actor = localinfo.actor;
+    if (actor == "Tenant") {
+      this.isTenant = true;
+    } else this.isTenant = false;
+  },
   methods: {
     logout() {
       localStorage.clear;
@@ -60,7 +68,8 @@ export default {
       this.$router.push({ name: "MyHouse" });
     },
     chat() {
-      this.$router.push({ name: "chat" });
+      var id = -1;
+      this.$router.push({ name: "chat", params: { id } });
     },
     setting() {
       this.$router.push({ name: "setting" });
