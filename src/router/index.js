@@ -19,6 +19,7 @@ import UpdateHouseView from "../views/UpdateHouseView.vue";
 import SettingView from "../views/SettingView.vue";
 import ProfileView from "../views/ProfileView.vue";
 import ChatView from "../views/ChatView.vue";
+// import MapView from "../views/MapView.vue";
 const routes = [
   {
     path: "/",
@@ -132,7 +133,7 @@ const routes = [
     component: ProfileView,
   },
   {
-    path: "/Chat",
+    path: "/Chat/:id",
     name: "chat",
     component: ChatView,
   },

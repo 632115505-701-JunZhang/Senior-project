@@ -110,7 +110,10 @@
                 >Delete</el-button
               >
             </div>
-            <el-button v-if="!this.isSamePerson" type="primary" @click="contact"
+            <el-button
+              v-if="!this.isSamePerson"
+              type="primary"
+              @click="Contact(this.house.user_id)"
               >Contact him</el-button
             >
           </el-card>
@@ -122,6 +125,7 @@
 <script>
 import AsideCom from "../components/AsideCom.vue";
 import HouseService from "../Services/HouseService";
+import MessageService from "../Services/MessageService";
 export default {
   data() {
     return {
@@ -157,7 +161,31 @@ export default {
           alert(error.response.data);
         });
     },
-    contact() {},
+    Contact(HouseUserId) {
+      if (
+        this.user_id == null ||
+        this.user_id == "" ||
+        this.HouseUserId == null ||
+        this.HouseUserId == ""
+      ) {
+        alert("user id or card is empty,please login again");
+        return;
+      }
+      const message = {
+        text: "",
+        time: "",
+        send_id: this.user_id,
+        receive_id: HouseUserId,
+      };
+      const id = HouseUserId;
+      MessageService.addMessage(message)
+        .then(() => {
+          this.$router.push({ name: "chat", params: { id } });
+        })
+        .catch((error) => {
+          alert(error.response.data);
+        });
+    },
     update(house) {
       if (this.house.house_pic[0] == "") this.house.house_pic = [];
       this.$router.push({

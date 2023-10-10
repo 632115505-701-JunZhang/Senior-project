@@ -13,7 +13,7 @@
         </el-header>
         <el-main>
           <el-button type="primary" @click="profile">Profile</el-button>
-          <el-button type="primary" @click="message">Message</el-button>
+          <!-- <el-button type="primary" @click="message">Message</el-button> -->
         </el-main>
       </el-container>
     </el-container>

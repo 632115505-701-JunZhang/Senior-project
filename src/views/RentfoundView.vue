@@ -10,7 +10,13 @@
           <h3 class="Rentfind_title">Rent Find</h3>
         </el-header>
         <el-main>
-          <el-card v-for="house in houses" class="Housecard" :key="house.id">
+          <h2 v-if="this.isHouseEmpty">Not Find Houses!</h2>
+          <el-card
+            v-for="house in houses"
+            class="Housecard"
+            :key="house.id"
+            v-else
+          >
             <!-- <el-avatar :size="50" :src="card.avatar"> user </el-avatar> -->
             <!-- <div>{{ house.landlord_name }}</div> -->
             <div>{{ house.address }}</div>
@@ -78,6 +84,7 @@ export default {
     return {
       houses: [],
       house: {},
+      isHouseEmpty: false,
     };
   },
   components: {
@@ -87,6 +94,7 @@ export default {
     const housesString = this.$route.params.houses;
     this.houses = JSON.parse(housesString);
     console.log(this.houses);
+    if (this.houses.length == 0) this.isHouseEmpty = true;
   },
   methods: {
     handleClick(house) {

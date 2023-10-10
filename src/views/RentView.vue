@@ -153,6 +153,14 @@ export default {
         room_type: "",
         price: "",
       },
+      searchCon: {
+        city: "Chiang Mai",
+        university: "",
+        start_time: "",
+        end_time: "",
+        room_type: "",
+        price: "",
+      },
     };
   },
 
@@ -162,52 +170,40 @@ export default {
 
   methods: {
     checkValues() {
-      if (!this.house.city) {
-        alert("Please select city");
-        return false;
-      }
       if (!this.house.university) {
-        alert("Please select university");
-        return false;
-      }
+        this.searchCon.university = "Unlimited";
+      } else this.searchCon.university = this.house.university;
       if (!this.house.start_time) {
-        alert("Please select start_time");
-        return false;
-      }
+        this.searchCon.start_time = "Unlimited";
+      } else this.searchCon.start_time = this.formatDate(this.house.start_time);
       if (!this.house.end_time) {
-        alert("Please select end_time");
-        return false;
-      }
-      if (this.house.end_time < this.house.start_time) {
-        alert("End time is earlier than start time");
-        return false;
+        this.searchCon.end_time = "Unlimited";
+      } else this.searchCon.end_time = this.formatDate(this.house.end_time);
+
+      if (this.house.start_time && this.house.end_time) {
+        if (this.house.end_time < this.house.start_time)
+          alert("End time is earlier than start time");
       }
       if (!this.house.room_type) {
-        alert("Please select room type");
-        return false;
-      }
+        this.searchCon.room_type = "Unlimited";
+      } else this.searchCon.room_type = this.house.room_type;
       if (!this.house.price) {
-        alert("Please select rent price");
-        return false;
-      }
-      return true;
+        this.searchCon.price = "Unlimited";
+      } else this.searchCon.price = this.house.price;
     },
     search() {
-      if (!this.checkValues()) {
-        return;
-      }
-      this.house.start_time = this.formatDate(this.house.start_time);
-      this.house.end_time = this.formatDate(this.house.end_time);
-      console.log(this.house);
-      HouseService.houseSearch(this.house)
+      this.checkValues();
+      console.log(this.searchCon);
+      HouseService.houseSearch(this.searchCon)
         .then((response) => {
           let res = response.data;
           var housesString = JSON.stringify(res);
-          this.houses = JSON.parse(housesString);
-          this.$router.push({
-            name: "Find",
-            params: { houses: JSON.stringify(this.houses) },
-          });
+          console.log(housesString);
+          // this.houses = JSON.parse(housesString);
+          // this.$router.push({
+          //   name: "Find",
+          //   params: { houses: JSON.stringify(this.houses) },
+          // });
         })
         .catch((error) => {
           alert(error.response.data);

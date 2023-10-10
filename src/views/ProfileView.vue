@@ -21,7 +21,7 @@
                 </template>
               </div>
               <el-button type="primary" class="upload" @click="upload"
-                >Upload</el-button
+                >Update avatar</el-button
               >
             </template>
             <div>
@@ -90,6 +90,7 @@ export default {
         alert("Please enter a username");
         return;
       }
+      // console.log(this.user);
       UserService.updateUser(this.user)
         .then((response) => {
           alert("Success");

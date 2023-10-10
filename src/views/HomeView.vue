@@ -10,7 +10,7 @@
         <el-form :model="form" label-high="10px">
           <el-row class="condition-set">
             <!--添加Reset 按钮搜索-->
-            <el-button type="primary" @click="reset">Reset</el-button>
+            <!-- <el-button type="primary" @click="reset">Reset</el-button> -->
             &ensp; &ensp; &ensp;
             <!--学校选择-->
             <el-select
@@ -84,7 +84,12 @@
             />
           </el-table>
 
-          <el-button type="primary" @click="contact">Contact him</el-button>
+          <el-button
+            type="primary"
+            @click="Contact(card.user_id)"
+            v-if="!isSameUser(card.user_id)"
+            >Contact him</el-button
+          >
         </el-card>
       </el-main>
       <!-- <router-view></router-view> -->
@@ -126,7 +131,7 @@
 <script>
 import AsideCom from "../components/AsideCom.vue";
 import CardService from "../Services/CardService";
-
+import MessageService from "../Services/MessageService";
 export default {
   data() {
     return {
@@ -138,7 +143,7 @@ export default {
         type3: "House",
         below: "5000",
         period: "5000-10000",
-        over: "Over-10000",
+        over: "10000",
         yes: "Yes",
         no: "No",
         university: "",
@@ -152,48 +157,51 @@ export default {
         address: "XJSIOKAJHNNDOIDOIAH",
       },
       cards: [],
+      user_id: "",
+      searchCon: {
+        university: "",
+        roomtype: "",
+        price: "",
+        acc: "",
+      },
     };
   },
 
   methods: {
     checkValues() {
       if (!this.form.university) {
-        alert("Please select university");
-        return false;
-      }
+        this.searchCon.university = "Unlimited";
+      } else this.searchCon.university = this.form.university;
+
       if (!this.form.roomtype) {
-        alert("Please select roomtype");
-        return false;
-      }
+        this.searchCon.roomtype = "Unlimited";
+      } else this.searchCon.roomtype = this.form.roomtype;
+
       if (!this.form.price) {
-        alert("Please select price");
-        return false;
-      }
+        this.searchCon.price = "Unlimited";
+      } else this.searchCon.price = this.form.price;
+
       if (!this.form.acc) {
-        alert("Please select shared acconmdation");
-        return false;
-      }
-      return true;
+        this.searchCon.acc = "Unlimited";
+      } else this.searchCon.acc = this.form.acc;
     },
     reset() {
       location.reload();
     },
     search() {
-      if (!this.checkValues()) {
-        return;
-      }
+      this.checkValues();
       const card = {
-        address: this.form.university,
-        room_type: this.form.roomtype,
-        price: this.form.price,
-        share_accommodation: this.form.acc,
+        address: this.searchCon.university,
+        room_type: this.searchCon.roomtype,
+        price: this.searchCon.price,
+        share_accommodation: this.searchCon.acc,
       };
       console.log(card);
       CardService.searchCards(
-        this.form.university,
-        this.form.roomtype,
-        this.form.price,
-        this.form.acc
+        this.searchCon.university,
+        this.searchCon.roomtype,
+        this.searchCon.price,
+        this.searchCon.acc
       )
         .then((response) => {
           let res = response.data;
@@ -205,9 +213,40 @@ export default {
           alert(error.response.data);
         });
     },
+    isSameUser(cardUserId) {
+      if (cardUserId == this.user_id) return true;
+      else return false;
+    },
+    Contact(cardUserId) {
+      if (
+        this.user_id == null ||
+        this.user_id == "" ||
+        this.cardUserId == null ||
+        this.cardUserId == ""
+      ) {
+        alert("user id or card id is empty,please login again");
+        return;
+      }
+      const message = {
+        text: "",
+        time: "",
+        send_id: this.user_id,
+        receive_id: cardUserId,
+      };
+      const id = cardUserId;
+      MessageService.addMessage(message)
+        .then(() => {
+          this.$router.push({ name: "chat", params: { id } });
+        })
+        .catch((error) => {
+          alert(error.response.data);
+        });
+    },
   },
 
   mounted() {
+    var localinfo = JSON.parse(localStorage.getItem("token"));
+    this.user_id = localinfo.id;
     CardService.getCards()
       .then((response) => {
         let res = response.data;

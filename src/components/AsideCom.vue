@@ -1,6 +1,10 @@
 <template>
   <el-menu default-active="2" class="el-menu-vertical-demo">
-    <el-menu-item index="1" v-if="isTenant">
+    <el-menu-item index="1">
+      <el-icon><icon-menu /></el-icon>
+      <el-avatar :size="55" :src="this.pic"></el-avatar>
+    </el-menu-item>
+    <el-menu-item index="1">
       <template #title>
         <el-icon><icon-menu /></el-icon>
         <el-button @click="home"> Home </el-button>
@@ -40,11 +44,14 @@ export default {
   data() {
     return {
       isTenant: false,
+      pic: null,
     };
   },
   mounted() {
     var localinfo = JSON.parse(localStorage.getItem("token"));
+    this.pic = localinfo.pic;
     var actor = localinfo.actor;
+    console.log(this.pic);
     if (actor == "Tenant") {
       this.isTenant = true;
     } else this.isTenant = false;

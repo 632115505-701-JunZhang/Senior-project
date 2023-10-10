@@ -17,7 +17,7 @@ export default {
     return apiClient.post("/login", user);
   },
   getUser(id) {
-    return apiClient.get("/getUserById?id=" + id);
+    return apiClient.get("/getUserById/" + id);
   },
   updateUser(user) {
     return apiClient.post("/updateUser", user);
