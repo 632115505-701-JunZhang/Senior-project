@@ -41,30 +41,35 @@ export default {
         this.files.map((file) => {
           return UserService.uploadFile(file);
         })
-      ).then((response) => {
-        var newPic = response.map((r) => r.data);
-        newPic.forEach((url) => {
-          this.pic = url;
-          console.log(this.pic);
-        });
-        var localinfo = JSON.parse(localStorage.getItem("token"));
-        var id = localinfo.id;
-        var pic = this.pic;
-        if (this.vaildNone(id) && this.vaildNone(pic)) {
-          let body = JSON.stringify({
-            id,
-            pic,
+      )
+        .then((response) => {
+          var newPic = response.map((r) => r.data);
+          newPic.forEach((url) => {
+            this.pic = url;
+            console.log(this.pic);
           });
-          UserService.saveUserPic(body)
-            .then(() => {
-              alert("Success");
-              this.$router.push({ name: "profile" });
-            })
-            .catch((error) => {
-              alert(error.response.data);
+          var localinfo = JSON.parse(localStorage.getItem("token"));
+          var id = localinfo.id;
+          var pic = this.pic;
+          if (this.vaildNone(id) && this.vaildNone(pic)) {
+            let body = JSON.stringify({
+              id,
+              pic,
             });
-        }
-      });
+            UserService.saveUserPic(body)
+              .then(() => {
+                alert("Success");
+                this.$router.push({ name: "profile" });
+              })
+              .catch((error) => {
+                alert(error.response.data);
+              });
+          }
+        })
+        .catch(() => {
+          alert("image format must be JPEG, PNG, JPEG, GIF");
+          location.reload();
+        });
     },
     vaildNone(data) {
       if (data == "") {
