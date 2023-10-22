@@ -199,11 +199,11 @@ export default {
           let res = response.data;
           var housesString = JSON.stringify(res);
           console.log(housesString);
-          // this.houses = JSON.parse(housesString);
-          // this.$router.push({
-          //   name: "Find",
-          //   params: { houses: JSON.stringify(this.houses) },
-          // });
+          this.houses = JSON.parse(housesString);
+          this.$router.push({
+            name: "Find",
+            params: { houses: JSON.stringify(this.houses) },
+          });
         })
         .catch((error) => {
           alert(error.response.data);
