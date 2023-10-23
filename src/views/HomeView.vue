@@ -221,8 +221,8 @@ export default {
       if (
         this.user_id == null ||
         this.user_id == "" ||
-        this.cardUserId == null ||
-        this.cardUserId == ""
+        cardUserId == null ||
+        cardUserId == ""
       ) {
         alert("user id or card id is empty,please login again");
         return;

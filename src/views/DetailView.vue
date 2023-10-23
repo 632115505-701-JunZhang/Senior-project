@@ -134,6 +134,7 @@ export default {
       email: "",
       isExist: true,
       isSamePerson: false,
+      user_id: null,
     };
   },
 
@@ -144,8 +145,8 @@ export default {
     var houseString = JSON.parse(this.$route.query.house);
     this.house = houseString;
     var localinfo = JSON.parse(localStorage.getItem("token"));
-    var user_id = localinfo.id;
-    if (this.house.user_id == user_id) this.isSamePerson = true;
+    this.user_id = localinfo.id;
+    if (this.house.user_id == this.user_id) this.isSamePerson = true;
     this.getUserInfo();
     if (this.house.house_pic[0] == "") this.isExist = false;
   },
@@ -165,9 +166,10 @@ export default {
       if (
         this.user_id == null ||
         this.user_id == "" ||
-        this.HouseUserId == null ||
-        this.HouseUserId == ""
+        HouseUserId == null ||
+        HouseUserId == ""
       ) {
+        console.log(this.user_id);
         alert("user id or card is empty,please login again");
         return;
       }
